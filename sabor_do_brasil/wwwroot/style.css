@@ -1,0 +1,40 @@
+.perfil {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .perfil img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+
+  .perfil h2 {
+    font-size: 22px;
+    margin-top: 15px;
+    color: #333;
+  }
+
+  .linha-colorida {
+    width: 50%;
+    height: 4px;
+    background-color: #e63946; /* Cor vermelha */
+    margin: 15px auto;
+  }
+  .card-custom {
+    max-width: 500px;
+    margin: 20px auto;
+  }
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+  .card-body {
+    text-align: center;
+  }

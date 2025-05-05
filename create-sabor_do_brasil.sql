@@ -1,4 +1,4 @@
-DROP DATABASE sabor_do_brasil;
+CREATE DATABASE sabor_do_brasil;
 USE sabor_do_brasil;
 
 CREATE TABLE usuarios (
