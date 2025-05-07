@@ -63,7 +63,68 @@
   display: inline-block;
   margin-bottom: 0;
 }
+
 .perfil {
   word-break: normal;
   white-space: normal;
 }
+
+.botao-entrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 10%;
+}
+
+/* Botão em si */
+.botao-entrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 10%;
+}
+
+/* Botão "Entrar" fora do modal */
+.botao-entrar button {
+  background-color: orange;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 20px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+/* Botões do modal */
+.btn-branco {
+  background-color: #FFA500;
+  color: white;
+  border: 2px solid #FFA500;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  width: auto;
+  display: inline-block;
+}
+
+.btn-branco:hover,
+.btn-branco:focus,
+.btn-branco:active {
+  background-color: #e69500;
+  border-color: #e69500;
+  color: white;
+  box-shadow: none;
+  outline: none;
+}
+
+.border-laranja {
+  border: 2px solid #FFA500 !important;
+}
+
