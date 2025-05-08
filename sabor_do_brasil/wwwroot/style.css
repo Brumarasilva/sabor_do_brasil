@@ -1,3 +1,5 @@
+/* Reorganizando e corrigindo o estilo */
+
 .perfil {
   background-color: white;
   padding: 20px;
@@ -8,11 +10,17 @@
 }
 
 .perfil img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #ddd;
+
+   display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  
+  
 }
 
 .perfil h2 {
@@ -29,13 +37,10 @@
   margin: 15px auto;
 }
 
-.card-custom {
-  max-width: 500px;
-  margin: 20px auto;
-}
+
 
 .card-img-top {
-  height: 250px;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -59,31 +64,12 @@
   margin: 0 auto;
 }
 
-.arroba {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-.perfil {
-  word-break: normal;
-  white-space: normal;
-}
-
 .botao-entrar {
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 9999;
-  width: 10%;
-}
-
-/* Botão em si */
-.botao-entrar {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  width: 10%;
+  width: 15%; /* Ajustei para um valor maior em telas pequenas */
 }
 
 /* Botão "Entrar" fora do modal */
@@ -128,3 +114,4 @@
   border: 2px solid #FFA500 !important;
 }
 
+/* Garantir que o footer fique fixado na parte inferior */

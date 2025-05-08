@@ -15,189 +15,151 @@
 </head>
 
 <body>
-
-
-    <!-- Botão Entrar fixo no canto superior direito -->
-    <div class="botao-entrar">
-        <!-- Botão que abre o modal -->
-        <button type="button" class="btn btn-branco" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          Entrar
-        </button>
-      
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-          aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-      
-              <!-- Cabeçalho -->
-              <div class="modal-header">
-                <h1 class="modal-title fs-5 w-100 text-center" id="staticBackdropLabel">Login</h1>
-              </div>
-      
-              <!-- Corpo com campos de formulário -->
-              <div class="modal-body">
-                <form>
-                  <div class="mb-3">
-                    <input type="text" class="form-control" id="nome" placeholder="Digite seu e-mail">
-                  </div>
-                  <div class="mb-3">
-                    <input type="password" class="form-control" id="senha" placeholder="Digite sua senha">
-                  </div>
-                </form>
-              </div>
-      
-              <!-- Rodapé com botões lado a lado -->
-              <div class="modal-footer text-center">
-                <div class="w-100 d-flex justify-content-center gap-3">
-                  <button type="button" class="btn btn-branco border-laranja" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-branco border-laranja">Entrar</button>
-                </div>
-              </div>
-      
-            </div>
-          </div>
-        </div>
-      </div>
-      
     <main>
-
-        <div class="row">
-
-
-            <!-- Coluna 1: Perfil com foto de perfil e nome -->
-            <div class="col-md-3 perfil">
-                <img src="img/images__2_-removebg-preview.png" alt="Logo Sabor do Brasil">
-
-                <h2>@sabordobrasil</h2>
-                <hr class="linha-laranja">
-
-                <div>
-                    <div class="text">
-                        <div class="d-flex justify-content-around mt-3">
-
-                            <div class="text-center">
-                                <i class="bi bi-hand-thumbs-up-fill"></i>
-                                <span class="fw-normal">12</span>
-                                <p class="mb-0">quantidade de likes</p>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Coluna 1: Perfil -->
+                <div class="col-md-3">
+                    <div class="perfil">
+                        <img src="img/images__2_-removebg-preview.png" alt="Logo Sabor do Brasil">
+                        <h2>@sabordobrasil</h2>
+                        <hr class="linha-laranja">
+                        <div>
+                            <div class="text">
+                                <div class="d-flex justify-content-around mt-3">
+                                    <div class="text-center">
+                                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                                        <span class="fw-normal">12</span>
+                                        <p class="mb-0">quantidade de likes</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <i class="bi bi-hand-thumbs-down-fill"></i>
+                                        <span class="fw-normal">4</span>
+                                        <p class="mb-0">quantidade de deslikes</p>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="text-center">
-                                <i class="bi bi-hand-thumbs-down-fill"></i>
-                                <span class="fw-normal">4</span>
-                                <p class="mb-0">quantidade de dislikes</p>
-                            </div>
-
                         </div>
                     </div>
-
                 </div>
 
-            </div>
-
-
-            <!-- Outras colunas podem ser preenchidas aqui -->
-            <div class="col-md-3">
-
-                <div class="text-">
+                <!-- Coluna 2: Publicações -->
+                <div class="col-md-6" style="border: 1px grey solid;">
                     <h3>Publicações</h3>
-                </div>
-                <div class="card card-custom">
-                    <h5 class="card-title">Arroz, Feijão, Fritas, Carne e Salada</h5>
-                    <img src="img/feijão_carne_batata-frita_salada.jpg" class="card-img-top" alt="Imagem do Prato">
-                    <div class="card-body">
-
-                        <p class="card-text">Este é um prato incrível feito com ingredientes frescos e
-                            saborosos.
-                            Ideal para qualquer ocasião.</p>
-
-                        <!-- Botões de Curtir e Comentar -->
-                        <!-- Botões de Curtir e Comentar -->
-                        <div class="text-start">
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-up-fill"></i> 4
-                                <!-- <i class="bi bi-hand-thumbs-up"></i> -->
-                            </a>
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-down"></i> 1
-                            </a>
+                    <!-- Publicação 1 -->
+                    <div class="card card-custom mb-4">
+                        <h5 class="card-title">Arroz, Feijão, Fritas, Carne e Salada</h5>
+                        <img src="img/feijão_carne_batata-frita_salada.jpg" class="card-img-top img-fluid"
+                            alt="Imagem do Prato">
+                        <div class="card-body">
+                            <p class="card-text">Este é um prato incrível feito com ingredientes frescos e saborosos.
+                                Ideal para qualquer ocasião.</p>
+                            <div class="text-start">
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> 4
+                                </a>
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-down"></i> 1
+                                </a>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-                <div class="card card-custom">
-                    <h5 class="card-title">Caldo de Mocotó</h5>
-                    <img src="img/caldodemocoto.webp" class="card-img-top" alt="Imagem do Prato">
-                    <div class="card-body">
 
-                        <p class="card-text">Este é um prato incrível feito com ingredientes frescos e
-                            saborosos.
-                            Ideal para qualquer ocasião.</p>
-
-                        <!-- Botões de Curtir e Comentar -->
-                        <!-- Botões de Curtir e Comentar -->
-                        <div class="text-start">
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-up-fill"></i> 3
-                                <!-- <i class="bi bi-hand-thumbs-up"></i> -->
-                            </a>
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-down"></i> 2
-                            </a>
+                    <!-- Publicação 2 -->
+                    <div class="card card-custom mb-4">
+                        <h5 class="card-title">Moqueca de Peixe</h5>
+                        <img src="img/caldodemocoto.webp" class="card-img-top img-fluid" alt="Imagem do Prato">
+                        <div class="card-body">
+                            <p class="card-text">Uma deliciosa moqueca de peixe com temperos típicos brasileiros.
+                                Perfeita para um almoço especial.</p>
+                            <div class="text-start">
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> 10
+                                </a>
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-down"></i> 2
+                                </a>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-                <div class="card card-custom">
-                    <h5 class="card-title">Caldo verde com tomate</h5>
-                    <img src="img/caldoverde.jpg" class="card-img-top" alt="Imagem do Prato">
-                    <div class="card-body">
 
-                        <p class="card-text">Este é um prato incrível feito com ingredientes frescos e
-                            saborosos.
-                            Ideal para qualquer ocasião.</p>
-
-                        <!-- Botões de Curtir e Comentar -->
-                        <div class="text-start">
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-up-fill"></i> 5
-                                <!-- <i class="bi bi-hand-thumbs-up"></i> -->
-                            </a>
-                            <a href="" class="text-decoration-none">
-                                <i class="bi bi-hand-thumbs-down"></i> 1
-                            </a>
+                    <!-- Publicação 3 -->
+                    <div class="card card-custom">
+                        <h5 class="card-title">Feijoada Completa</h5>
+                        <img src="img/feijoada.jpg" class="card-img-top img-fluid" alt="Imagem do Prato">
+                        <div class="card-body">
+                            <p class="card-text">A tradicional feijoada brasileira, acompanhada de arroz, couve e
+                                laranja. Um clássico irresistível.</p>
+                            <div class="text-start">
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> 15
+                                </a>
+                                <a href="" class="text-decoration-none">
+                                    <i class="bi bi-hand-thumbs-down"></i> 3
+                                </a>
+                            </div>
                         </div>
-
                     </div>
                 </div>
 
-
+                <!-- Coluna 3: Login -->
+                <div class="col-md-3">
+                    <div class="botao-entrar">
+                        <button type="button" class="btn btn-branco" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            Entrar
+                        </button>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 w-100 text-center" id="staticBackdropLabel">Login
+                                        </h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <input type="text" class="form-control" id="nome"
+                                                    placeholder="Digite seu e-mail">
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="password" class="form-control" id="senha"
+                                                    placeholder="Digite sua senha">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer text-center">
+                                        <div class="w-100 d-flex justify-content-center gap-3">
+                                            <button type="button" class="btn btn-branco border-laranja"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-branco border-laranja">Entrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
-
-        </div>
-
-
-        <!-- Link para o JS do Bootstrap -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         </div>
     </main>
 
     <footer>
         <footer class="bg-warning text-white py-3 mt-4">
             <div class="container d-flex justify-content-between align-items-center">
-                <span class="fw-bold">Sabor do Brasil</span>
-                <div>
-                    <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white me-3"><i class="bi bi-twitter-x"></i></a>
+                <span class="fw-bold d-block mb-2">Sabor do Brasil</span>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
                     <a href="#" class="text-white"><i class="bi bi-envelope"></i></a>
-                    <span class="text-white">Copyright &copy; 2025</span>
+                    <span class="text-white d-block mt-">Copyright &copy; 2025</span>
                 </div>
             </div>
-        </footer>
+            </div>
 
+        </footer>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
