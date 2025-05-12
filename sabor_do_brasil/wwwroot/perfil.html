@@ -58,12 +58,27 @@
                             <p class="card-text">Este é um prato incrível feito com ingredientes frescos e saborosos.
                                 Ideal para qualquer ocasião.</p>
                             <div class="text-start">
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-up-fill"></i> 4
                                 </a>
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-down"></i> 1
                                 </a>
+                            </div>
+                            <hr>
+                            <!-- Formulário de Comentários -->
+                            <form class="formComentario">
+                                <div class="mb-3 d-flex">
+                                    <textarea class="form-control comentarioUsuario" rows="2"
+                                        placeholder="Digite seu comentário"></textarea>
+                                    <button type="submit" class="btn btn-primary btn-sm ms-2 d-flex align-items-center">
+                                        <i class="bi bi-send"></i> <!-- Ícone de envio -->
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="listaComentarios mt-3">
+                                
+                                <!-- Comentários adicionados dinamicamente aparecerão aqui -->
                             </div>
                         </div>
                     </div>
@@ -78,12 +93,27 @@
                             <p class="card-text">Uma deliciosa moqueca de peixe com temperos típicos brasileiros.
                                 Perfeita para um almoço especial.</p>
                             <div class="text-start">
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-up-fill"></i> 10
                                 </a>
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-down"></i> 2
                                 </a>
+                            </div>
+                            <hr>
+                            <!-- Formulário de Comentários -->
+                            <form class="formComentario">
+                                <div class="mb-3 d-flex">
+                                    <textarea class="form-control comentarioUsuario" rows="2"
+                                        placeholder="Digite seu comentário"></textarea>
+                                    <button type="submit" class="btn btn-primary btn-sm ms-2 d-flex align-items-center">
+                                        <i class="bi bi-send"></i> <!-- Ícone de envio -->
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="listaComentarios mt-3">
+                               
+                                <!-- Comentários adicionados dinamicamente aparecerão aqui -->
                             </div>
                         </div>
                     </div>
@@ -98,12 +128,27 @@
                             <p class="card-text">A tradicional feijoada brasileira, acompanhada de arroz, couve e
                                 laranja. Um clássico irresistível.</p>
                             <div class="text-start">
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-up-fill"></i> 15
                                 </a>
-                                <a href="" class="text-decoration-none">
+                                <a href="#" class="text-decoration-none">
                                     <i class="bi bi-hand-thumbs-down"></i> 3
                                 </a>
+                            </div>
+                            <hr>
+                            <!-- Formulário de Comentários -->
+                            <form class="formComentario">
+                                <div class="mb-3 d-flex">
+                                    <textarea class="form-control comentarioUsuario" rows="2"
+                                        placeholder="Digite seu comentário"></textarea>
+                                    <button type="submit" class="btn btn-primary btn-sm ms-2 d-flex align-items-center">
+                                        <i class="bi bi-send"></i> <!-- Ícone de envio -->
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="listaComentarios mt-3">
+                                
+                                <!-- Comentários adicionados dinamicamente aparecerão aqui -->
                             </div>
                         </div>
                     </div>
@@ -178,7 +223,59 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('btnCadastrar').addEventListener('click', function (event) {
+            event.preventDefault(); // Impede o comportamento padrão do botão
 
+            // Redireciona diretamente para a página de perfil
+            window.location.href = 'perfil.html';
+        });
+    </script>
+    <script>
+        // Captura todos os formulários de comentários
+        document.querySelectorAll('.formComentario').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Impede o comportamento padrão do formulário
+
+                // Captura o comentário do usuário
+                const comentarioInput = form.querySelector('.comentarioUsuario');
+                const comentario = comentarioInput.value.trim();
+
+                // Verifica se o campo de comentário está vazio
+                if (!comentario) {
+                    alert('Por favor, digite um comentário antes de enviar.');
+                    return;
+                }
+
+                // Cria um novo elemento para exibir o comentário
+                const novoComentario = document.createElement('div');
+                novoComentario.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'border', 'p-2', 'rounded', 'bg-light', 'mb-2');
+
+                // Adiciona o texto do comentário
+                const textoComentario = document.createElement('span');
+                textoComentario.textContent = comentario;
+
+                // Cria o botão "Excluir"
+                const botaoExcluir = document.createElement('button');
+                botaoExcluir.textContent = 'Excluir';
+                botaoExcluir.classList.add('btn', 'btn-danger', 'btn-sm', 'ms-2');
+                botaoExcluir.addEventListener('click', function () {
+                    novoComentario.remove(); // Remove o comentário
+                });
+
+                // Adiciona o texto e o botão ao novo comentário
+                novoComentario.appendChild(textoComentario);
+                novoComentario.appendChild(botaoExcluir);
+
+                // Adiciona o comentário à lista de comentários do card
+                const listaComentarios = form.nextElementSibling;
+                listaComentarios.appendChild(novoComentario);
+
+                // Limpa o campo de comentário
+                comentarioInput.value = '';
+            });
+        });
+    </script>
 </body>
 
 </html>

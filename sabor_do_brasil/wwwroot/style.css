@@ -114,4 +114,19 @@
   border: 2px solid #FFA500 !important;
 }
 
+/* Estilo padrão do botão */
+.btn-cadastrar {
+    background-color: orange; /* Cor laranja */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    transition: all 0.3s ease; /* Transição suave */
+}
+
+/* Estilo ao passar o mouse */
+.btn-cadastrar:hover {
+    background-color: white; /* Fundo branco */
+    color: red; /* Texto vermelho */
+    border: 2px solid red; /* Borda vermelha */
+}
+
 /* Garantir que o footer fique fixado na parte inferior */
