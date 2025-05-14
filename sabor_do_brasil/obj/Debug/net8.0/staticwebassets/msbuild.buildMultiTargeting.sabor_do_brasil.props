@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\sabor_do_brasil.props" />
+</Project>

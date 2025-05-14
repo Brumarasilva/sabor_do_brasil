@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("sabor_do_brasil")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+491332a2c6771d3b260836edcdf7af0e694fc27f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c84c16e801e637766bae4469e6c5857b8cd21cdb")]
 [assembly: System.Reflection.AssemblyProductAttribute("sabor_do_brasil")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sabor_do_brasil")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

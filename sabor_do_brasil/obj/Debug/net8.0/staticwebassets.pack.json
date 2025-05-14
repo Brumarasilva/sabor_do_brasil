@@ -1,0 +1,81 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\cadastro.html",
+      "PackagePath": "staticwebassets\\cadastro.html"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\File-de-Frango.png",
+      "PackagePath": "staticwebassets\\img\\File-de-Frango.png"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\arroz,carne,salada.jpg",
+      "PackagePath": "staticwebassets\\img\\arroz,carne,salada.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\caldodemocoto.webp",
+      "PackagePath": "staticwebassets\\img\\caldodemocoto.webp"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\caldoverde.jpg",
+      "PackagePath": "staticwebassets\\img\\caldoverde.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\comida1.png",
+      "PackagePath": "staticwebassets\\img\\comida1.png"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\comida2.png",
+      "PackagePath": "staticwebassets\\img\\comida2.png"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\comida3.png",
+      "PackagePath": "staticwebassets\\img\\comida3.png"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\composicao-de-comida-brasileira-deliciosa-de-alto-angulo_23-2148739223.avif",
+      "PackagePath": "staticwebassets\\img\\composicao-de-comida-brasileira-deliciosa-de-alto-angulo_23-2148739223.avif"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\feijão_carne_batata-frita_salada.jpg",
+      "PackagePath": "staticwebassets\\img\\feijão_carne_batata-frita_salada.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\images__2_-removebg-preview.png",
+      "PackagePath": "staticwebassets\\img\\images__2_-removebg-preview.png"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\mulher_usuario_01.jpg",
+      "PackagePath": "staticwebassets\\img\\mulher_usuario_01.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\perfil.html",
+      "PackagePath": "staticwebassets\\perfil.html"
+    },
+    {
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\style.css",
+      "PackagePath": "staticwebassets\\style.css"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.sabor_do_brasil.props",
+      "PackagePath": "build\\sabor_do_brasil.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.sabor_do_brasil.props",
+      "PackagePath": "buildMultiTargeting\\sabor_do_brasil.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.sabor_do_brasil.props",
+      "PackagePath": "buildTransitive\\sabor_do_brasil.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.sabor_do_brasil.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
