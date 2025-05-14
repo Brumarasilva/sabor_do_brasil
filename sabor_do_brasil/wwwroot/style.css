@@ -116,7 +116,7 @@
 
 /* Estilo padrão do botão */
 .btn-cadastrar {
-    background-color: orange; /* Cor laranja */
+    background-color: rgb(255, 153, 0); /* Cor laranja */
     color: white; /* Texto branco */
     border: none; /* Sem borda */
     transition: all 0.3s ease; /* Transição suave */
@@ -130,3 +130,7 @@
 }
 
 /* Garantir que o footer fique fixado na parte inferior */
+
+.comentarios-abaixo .text-start {
+    text-align: left !important;
+}

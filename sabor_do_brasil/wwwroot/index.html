@@ -259,8 +259,31 @@
             const lista = document.getElementById('lista-comentarios-' + id);
             const comentarios = comentariosPorPublicacao[id] || [];
             lista.innerHTML = comentarios.length
-                ? comentarios.map(c => `<p><strong>${c.usuario}:</strong> ${c.texto}</p>`).join('')
-                : "<p class='text-muted'>Nenhum comentário ainda.</p>";
+                ? `<div class="text-start">` +
+                    comentarios.map((c, idx) =>
+                        `<div class="d-flex align-items-center justify-content-between mb-1">
+                            <span><strong>${c.usuario}:</strong> ${c.texto}</span>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="editarComentario(${id}, ${idx}); return false;">
+                                            <i class="bi bi-pencil"></i> Editar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" onclick="excluirComentario(${id}, ${idx}); return false;">
+                                            <i class="bi bi-trash"></i> Excluir
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>`
+                    ).join('') +
+                  `</div>`
+                : "<p class='text-muted text-start'>Nenhum comentário ainda.</p>";
         }
 
         function adicionarComentario(event, id) {
@@ -273,6 +296,21 @@
             comentariosPorPublicacao[id].push({ usuario: "Usuário", texto });
             input.value = '';
             renderizarComentarios(id);
+        }
+
+        function excluirComentario(idPublicacao, idxComentario) {
+            if (confirm("Deseja realmente excluir este comentário?")) {
+                comentariosPorPublicacao[idPublicacao].splice(idxComentario, 1);
+                renderizarComentarios(idPublicacao);
+            }
+        }
+
+        function editarComentario(idPublicacao, idxComentario) {
+            const novoTexto = prompt("Editar comentário:", comentariosPorPublicacao[idPublicacao][idxComentario].texto);
+            if (novoTexto !== null && novoTexto.trim() !== "") {
+                comentariosPorPublicacao[idPublicacao][idxComentario].texto = novoTexto.trim();
+                renderizarComentarios(idPublicacao);
+            }
         }
     </script>
 
