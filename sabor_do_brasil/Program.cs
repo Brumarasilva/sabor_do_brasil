@@ -3,7 +3,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure; // Adicione este using
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicione esta linha para configurar o DbContext com MySQL
+// Configuração para MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
