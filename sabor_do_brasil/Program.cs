@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure; // Adicione este using
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure; //
+using sabor_do_brasil.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

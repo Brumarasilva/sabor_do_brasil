@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-// Ajuste o namespace se necessário
+using sabor_do_brasil.Models;
 
 public class AppDbContext : DbContext
 {
@@ -8,5 +8,3 @@ public class AppDbContext : DbContext
     // Um DbSet para a tabela de usuários
     public DbSet<Usuario> Usuarios { get; set; }
 }
-
-
