@@ -7,4 +7,5 @@ public class AppDbContext : DbContext
 
     // Um DbSet para a tabela de usuários
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Empresa> Empresas { get; set; }
 }
