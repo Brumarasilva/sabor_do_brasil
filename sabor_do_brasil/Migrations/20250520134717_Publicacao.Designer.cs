@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace sabor_do_brasil.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520134717_Publicacao")]
+    partial class Publicacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,71 +39,6 @@ namespace sabor_do_brasil.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorias");
-                });
-
-            modelBuilder.Entity("sabor_do_brasil.Models.Comentarios", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DataComentario")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("IdPublicacao")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PublicacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TextoComentario")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PublicacaoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Comentarios");
-                });
-
-            modelBuilder.Entity("sabor_do_brasil.Models.Curtidas", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdPublicacao")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PublicacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PublicacaoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Curtidas");
                 });
 
             modelBuilder.Entity("sabor_do_brasil.Models.Empresa", b =>
@@ -244,44 +182,6 @@ namespace sabor_do_brasil.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("sabor_do_brasil.Models.Comentarios", b =>
-                {
-                    b.HasOne("sabor_do_brasil.Models.Publicacao", "Publicacao")
-                        .WithMany()
-                        .HasForeignKey("PublicacaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("sabor_do_brasil.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publicacao");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("sabor_do_brasil.Models.Curtidas", b =>
-                {
-                    b.HasOne("sabor_do_brasil.Models.Publicacao", "Publicacao")
-                        .WithMany()
-                        .HasForeignKey("PublicacaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("sabor_do_brasil.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publicacao");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("sabor_do_brasil.Models.Empresa", b =>
