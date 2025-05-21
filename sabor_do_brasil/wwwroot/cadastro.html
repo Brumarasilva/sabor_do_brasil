@@ -70,29 +70,37 @@
   </footer>
 
   <script>
-    document.getElementById('btnCadastrar').addEventListener('click', function (event) {
-        event.preventDefault(); // Impede o comportamento padrão do botão
+    document.querySelector('form').addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-        // Captura os dados do formulário
         const nome = document.getElementById('nomeCompleto').value.trim();
         const email = document.getElementById('emailUsuario').value.trim();
+        const telefone = document.getElementById('telefoneUsuario').value.trim();
         const senha = document.getElementById('senhaUsuario').value.trim();
         const confirmarSenha = document.getElementById('confirmarSenhaUsuario').value.trim();
 
-        // Verifica se os campos obrigatórios estão preenchidos
         if (!nome || !email || !senha || !confirmarSenha) {
             alert('Por favor, preencha todos os campos obrigatórios.');
             return;
         }
 
-        // Verifica se as senhas coincidem
         if (senha !== confirmarSenha) {
             alert('As senhas não coincidem. Por favor, tente novamente.');
             return;
         }
 
-        // Redireciona para a página de perfil
-        window.location.href = 'perfil.html';
+        // Envia os dados para a API
+        const resposta = await fetch('/api/usuarios', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome, email, telefone, senha })
+        });
+
+        if (resposta.ok) {
+            window.location.href = 'perfil.html';
+        } else {
+            alert('Erro ao cadastrar usuário!');
+        }
     });
   </script>
 </body>

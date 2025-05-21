@@ -15,6 +15,8 @@ public class UsuariosController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Usuario usuario)
     {
+        Console.WriteLine($"Recebido: {usuario.Nome}, {usuario.Email}, {usuario.Telefone}, {usuario.Senha}");
+
         if (string.IsNullOrWhiteSpace(usuario.Nome) ||
             string.IsNullOrWhiteSpace(usuario.Email) ||
             string.IsNullOrWhiteSpace(usuario.Senha))
