@@ -20,23 +20,18 @@
             <div class="row">
                 <!-- Coluna 1: Perfil -->
                 <div class="col-md-3">
+                    <!-- Substitua o conteúdo fixo do perfil por elementos com IDs -->
                     <div class="perfil">
-                        <img src="img/images__2_-removebg-preview.png" alt="Logo Sabor do Brasil">
-                        <h2>@sabordobrasil</h2>
+                        <img id="fotoPerfil" alt="Foto do usuário">
+                        <h2 id="nomePerfil">@usuario</h2>
                         <hr class="linha-laranja">
                         <div>
                             <div class="text">
                                 <div class="d-flex justify-content-around mt-3">
                                     <div class="text-center">
                                         <i class="bi bi-hand-thumbs-up-fill"></i>
-                                        <span class="fw-normal">12</span>
+                                        <span class="fw-normal" id="curtidasPerfil">0</span>
                                         <p class="mb-0">quantidade de likes</p>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <i class="bi bi-hand-thumbs-down-fill"></i>
-                                        <span class="fw-normal">4</span>
-                                        <p class="mb-0">quantidade de deslikes</p>
                                     </div>
                                 </div>
                             </div>
@@ -312,9 +307,33 @@
                 renderizarComentarios(idPublicacao);
             }
         }
-    </script>
 
-    <script>
+        async function carregarPerfilUsuario() {
+            const idUsuario = localStorage.getItem('usuarioId');
+            const fotoPerfil = document.getElementById('fotoPerfil');
+            const nomePerfil = document.getElementById('nomePerfil');
+            const curtidasPerfil = document.getElementById('curtidasPerfil');
+
+            if (idUsuario) {
+                const resposta = await fetch(`/api/usuarios/${idUsuario}`);
+                if (resposta.ok) {
+                    const usuario = await resposta.json();
+                    fotoPerfil.src = usuario.foto ? usuario.foto : "";
+                    nomePerfil.textContent = usuario.nome;
+                    curtidasPerfil.textContent = usuario.curtidas;
+                } else {
+                    fotoPerfil.removeAttribute('src');
+                    nomePerfil.textContent = '@usuario';
+                    curtidasPerfil.textContent = '0';
+                }
+            } else {
+                fotoPerfil.removeAttribute('src');
+                nomePerfil.textContent = '@usuario';
+                curtidasPerfil.textContent = '0';
+            }
+        }
+        carregarPerfilUsuario();
+
         // Simulação de comentários por publicação
         const comentariosPorPublicacao = {
             1: [

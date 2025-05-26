@@ -12,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 app.UseDefaultFiles(); // Serve index.html por padrão
 app.UseStaticFiles(); // Permite servir arquivos da pasta wwwroot
@@ -31,5 +33,7 @@ app.MapPost("/login", async (AppDbContext db, Usuario login) =>
 
     return Results.Ok(new { usuario.Id, usuario.Email });
 });
+
+app.MapControllers();
 
 app.Run();

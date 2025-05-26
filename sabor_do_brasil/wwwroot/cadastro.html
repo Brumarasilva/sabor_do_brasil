@@ -39,21 +39,28 @@
   <main>
     <div class="form-wrapper">
       <h3 class="text-center mb-4">Preencha suas informações</h3>
-      <form>
+      <form action="/api/usuarios" method="post" enctype="multipart/form-data">
         <div class="mb-2">
-          <input type="text" class="form-control" id="nomeCompleto" placeholder="Digite seu nome completo" required />
+          <input type="text" name="Nome" id="nomeCompleto" class="form-control" placeholder="Digite seu nome completo"
+            required />
         </div>
         <div class="mb-2">
-          <input type="email" class="form-control" id="emailUsuario" placeholder="Digite seu e-mail" required />
+          <input type="email" name="Email" id="emailUsuario" class="form-control" placeholder="Digite seu e-mail"
+            required />
         </div>
         <div class="mb-2">
-          <input type="tel" class="form-control" id="telefoneUsuario" placeholder="Digite seu telefone" />
+          <input type="tel" name="Telefone" id="telefoneUsuario" class="form-control" placeholder="Digite seu telefone" />
         </div>
         <div class="mb-2">
-          <input type="password" class="form-control" id="senhaUsuario" placeholder="Digite sua senha" required />
+          <input type="password" name="Senha" id="senhaUsuario" class="form-control" placeholder="Digite sua senha"
+            required />
         </div>
         <div class="mb-2">
-          <input type="password" class="form-control" id="confirmarSenhaUsuario" placeholder="Confirme sua senha" required />
+          <input type="password" name="ConfirmarSenha" id="confirmarSenhaUsuario" class="form-control"
+            placeholder="Confirme sua senha" required />
+        </div>
+        <div class="mb-2">
+          <input type="file" name="Foto" id="fotoUsuario" class="form-control" accept="image/*" />
         </div>
         <div class="d-flex justify-content-between">
           <button type="button" class="btn btn-secondary w-45" onclick="window.location.href='index.html'">Voltar</button>
@@ -73,27 +80,12 @@
     document.querySelector('form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const nome = document.getElementById('nomeCompleto').value.trim();
-        const email = document.getElementById('emailUsuario').value.trim();
-        const telefone = document.getElementById('telefoneUsuario').value.trim();
-        const senha = document.getElementById('senhaUsuario').value.trim();
-        const confirmarSenha = document.getElementById('confirmarSenhaUsuario').value.trim();
+        const form = event.target;
+        const formData = new FormData(form);
 
-        if (!nome || !email || !senha || !confirmarSenha) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
-        }
-
-        if (senha !== confirmarSenha) {
-            alert('As senhas não coincidem. Por favor, tente novamente.');
-            return;
-        }
-
-        // Envia os dados para a API
         const resposta = await fetch('/api/usuarios', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, telefone, senha })
+            body: formData // Não defina o Content-Type, o navegador faz isso automaticamente!
         });
 
         if (resposta.ok) {
