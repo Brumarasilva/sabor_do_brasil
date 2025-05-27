@@ -22,7 +22,7 @@
                 <div class="col-md-3">
                     <!-- Substitua o conteúdo fixo do perfil por elementos com IDs -->
                     <div class="perfil">
-                        <img id="fotoPerfil" alt="Foto do usuário">
+                        <img id="fotoPerfil" alt="Foto do usuário" > 
                         <h2 id="nomePerfil">@usuario</h2>
                         <hr class="linha-laranja">
                         <div>
@@ -148,6 +148,7 @@
                             onclick="window.location.href='cadastro.html'">
                             Cadastrar
                         </button>
+                        <button onclick="logout()" class="btn btn-secondary mt-2">Sair</button>
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -221,134 +222,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
-    <script>
-        document.querySelector('.btn.btn-branco.border-laranja:last-child').addEventListener('click', async function () {
-            const email = document.getElementById('nome').value;
-            const senha = document.getElementById('senha').value;
-
-            const resposta = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, senha })
-            });
-
-            if (resposta.ok) {
-                // Login válido, redirecionar ou mostrar mensagem
-                window.location.href = "perfil.html";
-            } else {
-                alert("Usuário ou senha inválidos!");
-            }
-        });
-
-        function toggleComentarios(id) {
-            const area = document.getElementById('comentarios-abaixo-' + id);
-            if (area.style.display === 'none' || area.style.display === '') {
-                area.style.display = 'block';
-                renderizarComentarios(id);
-            } else {
-                area.style.display = 'none';
-            }
-        }
-
-        function renderizarComentarios(id) {
-            const lista = document.getElementById('lista-comentarios-' + id);
-            const comentarios = comentariosPorPublicacao[id] || [];
-            lista.innerHTML = comentarios.length
-                ? `<div class="text-start">` +
-                    comentarios.map((c, idx) =>
-                        `<div class="d-flex align-items-center justify-content-between mb-1">
-                            <span><strong>${c.usuario}:</strong> ${c.texto}</span>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="editarComentario(${id}, ${idx}); return false;">
-                                            <i class="bi bi-pencil"></i> Editar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-danger" href="#" onclick="excluirComentario(${id}, ${idx}); return false;">
-                                            <i class="bi bi-trash"></i> Excluir
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>`
-                    ).join('') +
-                  `</div>`
-                : "<p class='text-muted text-start'>Nenhum comentário ainda.</p>";
-        }
-
-        function adicionarComentario(event, id) {
-            event.preventDefault();
-            const input = document.getElementById('input-comentario-' + id);
-            const texto = input.value.trim();
-            if (!texto) return;
-            // Aqui você pode trocar "Usuário" pelo nome do usuário logado, se desejar
-            comentariosPorPublicacao[id] = comentariosPorPublicacao[id] || [];
-            comentariosPorPublicacao[id].push({ usuario: "Usuário", texto });
-            input.value = '';
-            renderizarComentarios(id);
-        }
-
-        function excluirComentario(idPublicacao, idxComentario) {
-            if (confirm("Deseja realmente excluir este comentário?")) {
-                comentariosPorPublicacao[idPublicacao].splice(idxComentario, 1);
-                renderizarComentarios(idPublicacao);
-            }
-        }
-
-        function editarComentario(idPublicacao, idxComentario) {
-            const novoTexto = prompt("Editar comentário:", comentariosPorPublicacao[idPublicacao][idxComentario].texto);
-            if (novoTexto !== null && novoTexto.trim() !== "") {
-                comentariosPorPublicacao[idPublicacao][idxComentario].texto = novoTexto.trim();
-                renderizarComentarios(idPublicacao);
-            }
-        }
-
-        async function carregarPerfilUsuario() {
-            const idUsuario = localStorage.getItem('usuarioId');
-            const fotoPerfil = document.getElementById('fotoPerfil');
-            const nomePerfil = document.getElementById('nomePerfil');
-            const curtidasPerfil = document.getElementById('curtidasPerfil');
-
-            if (idUsuario) {
-                const resposta = await fetch(`/api/usuarios/${idUsuario}`);
-                if (resposta.ok) {
-                    const usuario = await resposta.json();
-                    fotoPerfil.src = usuario.foto ? usuario.foto : "";
-                    nomePerfil.textContent = usuario.nome;
-                    curtidasPerfil.textContent = usuario.curtidas;
-                } else {
-                    fotoPerfil.removeAttribute('src');
-                    nomePerfil.textContent = '@usuario';
-                    curtidasPerfil.textContent = '0';
-                }
-            } else {
-                fotoPerfil.removeAttribute('src');
-                nomePerfil.textContent = '@usuario';
-                curtidasPerfil.textContent = '0';
-            }
-        }
-        carregarPerfilUsuario();
-
-        // Simulação de comentários por publicação
-        const comentariosPorPublicacao = {
-            1: [
-                { usuario: "Maria", texto: "Adorei esse prato!" },
-                { usuario: "João", texto: "Muito saboroso!" }
-            ],
-            2: [
-                { usuario: "Ana", texto: "Moqueca maravilhosa!" }
-            ],
-            3: [
-                { usuario: "Carlos", texto: "Feijoada top demais!" },
-                { usuario: "Bruna", texto: "Amo feijoada!" }
-            ]
-        };
-    </script>
+    <script src="js/script.js"></script>
 
 </body>
 

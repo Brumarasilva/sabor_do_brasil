@@ -5,14 +5,6 @@
       "PackagePath": "staticwebassets\\cadastro.html"
     },
     {
-      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\097061bd-77c4-4a7d-b8bc-917d2e7bb4f9.png",
-      "PackagePath": "staticwebassets\\img\\097061bd-77c4-4a7d-b8bc-917d2e7bb4f9.png"
-    },
-    {
-      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\27c297a1-70e6-4eb1-bb35-876bab063b94.png",
-      "PackagePath": "staticwebassets\\img\\27c297a1-70e6-4eb1-bb35-876bab063b94.png"
-    },
-    {
       "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\img\\File-de-Frango.png",
       "PackagePath": "staticwebassets\\img\\File-de-Frango.png"
     },
@@ -61,8 +53,8 @@
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\perfil.html",
-      "PackagePath": "staticwebassets\\perfil.html"
+      "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\js\\script.js",
+      "PackagePath": "staticwebassets\\js\\script.js"
     },
     {
       "Id": "C:\\Users\\Alunos\\Documents\\bruna\\sabor_do_brasil\\sabor_do_brasil\\wwwroot\\style.css",

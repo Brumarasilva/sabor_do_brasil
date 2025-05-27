@@ -16,30 +16,42 @@ public class UsuariosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromForm] Usuario usuario, IFormFile Foto)
     {
-        if (string.IsNullOrWhiteSpace(usuario.Nome) ||
-            string.IsNullOrWhiteSpace(usuario.Email) ||
-            string.IsNullOrWhiteSpace(usuario.Senha))
+        try
         {
-            return BadRequest("Dados obrigatórios não preenchidos.");
-        }
-
-        // Salvar a foto se enviada
-        if (Foto != null && Foto.Length > 0)
-        {
-            var fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(Foto.FileName);
-            var filePath = Path.Combine("wwwroot/img", fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            if (
+                string.IsNullOrWhiteSpace(usuario.Nome) ||
+                string.IsNullOrWhiteSpace(usuario.Email) ||
+                string.IsNullOrWhiteSpace(usuario.Senha)
+            )
             {
-                await Foto.CopyToAsync(stream);
+                return BadRequest("Dados obrigatórios não preenchidos.");
             }
 
-            usuario.Foto = "img/" + fileName;
-        }
+            var usuarioExistente = _context.Usuarios.FirstOrDefault(u => u.Email == usuario.Email);
+            if (usuarioExistente != null)
+            {
+                return Conflict("Já existe um usuário cadastrado com este e-mail.");
+            }
 
-        _context.Usuarios.Add(usuario);
-        await _context.SaveChangesAsync();
-        return Ok();
+            // Salvar a foto como base64 no banco
+            if (Foto != null && Foto.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await Foto.CopyToAsync(ms);
+                    var bytes = ms.ToArray();
+                    usuario.Foto = "data:" + Foto.ContentType + ";base64," + Convert.ToBase64String(bytes);
+                }
+            }
+
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
