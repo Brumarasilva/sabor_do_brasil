@@ -43,7 +43,7 @@
                 <div class="col-md-6" style="border: 1px grey solid;">
                     <h3>Publicações</h3>
                     <!-- Publicação 1 -->
-                    <div class="card card-custom mb-4" style="border: 1px solid #ccc;>
+                    <div class="card card-custom mb-4" style="border: 1px solid #ccc;">
                         <h5 class="card-title">Arroz, Feijão, Fritas, Carne e Salada</h5>
                         <div>
                             <img src="img/feijão_carne_batata-frita_salada.jpg" class="card-img-top img-fluid"
@@ -53,11 +53,11 @@
                             <p class="card-text">Este é um prato incrível feito com ingredientes frescos e saborosos.
                                 Ideal para qualquer ocasião.</p>
                             <div class="text-start d-flex align-items-center gap-3">
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> 4
+                                <a href="#" class="text-decoration-none" id="btn-like-1" onclick="darLike(1); return false;">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-1">4</span>
                                 </a>
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-down"></i> 1
+                                <a href="#" class="text-decoration-none" id="btn-deslike-1" onclick="darDeslike(1); return false;">
+                                    <i class="bi bi-hand-thumbs-down-fill"></i> <span id="deslike-1">1</span>
                                 </a>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(1); return false;">
                                     <i class="bi bi-chat-dots"></i> 3
@@ -84,11 +84,11 @@
                             <p class="card-text">Uma deliciosa moqueca de peixe com temperos típicos brasileiros.
                                 Perfeita para um almoço especial.</p>
                             <div class="text-start d-flex align-items-center gap-3">
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> 10
+                                <a href="#" class="text-decoration-none" id="btn-like-2" onclick="darLike(2); return false;">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-2">10</span>
                                 </a>
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-down"></i> 2
+                                <a href="#" class="text-decoration-none" id="btn-deslike-2" onclick="darDeslike(2); return false;">
+                                    <i class="bi bi-hand-thumbs-down-fill"></i> <span id="deslike-2">2</span>
                                 </a>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(2); return false;">
                                     <i class="bi bi-chat-dots"></i> 5
@@ -106,7 +106,7 @@
                     </div>
 
                     <!-- Publicação 3 -->
-                    <div class="card card-custom mb-4" style="border: 1px solid #ccc;>
+                    <div class="card card-custom mb-4" style="border: 1px solid #cccccc;">
                         <h5 class="card-title">Feijoada Completa</h5>
                         <div>
                             <img src="img/File-de-Frango.png" class="card-img-top img-fluid" alt="Imagem do Prato">
@@ -115,11 +115,11 @@
                             <p class="card-text">A tradicional feijoada brasileira, acompanhada de arroz, couve e
                                 laranja. Um clássico irresistível.</p>
                             <div class="text-start d-flex align-items-center gap-3">
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> 15
+                                <a href="#" class="text-decoration-none" id="btn-like-3" onclick="darLike(3); return false;">
+                                    <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-3">15</span>
                                 </a>
-                                <a href="#" class="text-decoration-none">
-                                    <i class="bi bi-hand-thumbs-down"></i> 3
+                                <a href="#" class="text-decoration-none" id="btn-deslike-3" onclick="darDeslike(3); return false;">
+                                    <i class="bi bi-hand-thumbs-down-fill"></i> <span id="deslike-3">3</span>
                                 </a>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(3); return false;">
                                     <i class="bi bi-chat-dots"></i> 8

@@ -142,6 +142,21 @@ hr{
     border: 2px solid red; /* Borda vermelha */
 }
 
+.btn-votado {
+  color: #fff !important;
+  background: #d90429 !important; /* vermelho forte */
+  border-radius: 5px;
+  padding: 2px 8px;
+  transition: background 0.2s;
+}
+
+.icone-votado {
+  color: #d90429 !important; /* vermelho forte */
+}
+.text-primary {
+  color: black !important; /* azul padrão Bootstrap */
+}
+
 /* Garantir que o footer fique fixado na parte inferior */
 
 .comentarios-abaixo .text-start {
@@ -155,4 +170,8 @@ hr{
   border-radius: 0;
   border: none;
   box-shadow: none;
+}
+
+.text-white {
+  color: #fff !important;
 }

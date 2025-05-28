@@ -174,3 +174,71 @@ if (window.location.pathname.endsWith('cadastro.html')) {
         }
     });
 }
+
+// Valores iniciais
+let likes = { 1: 4, 2: 10, 3: 15 };
+let deslikes = { 1: 1, 2: 2, 3: 3 };
+
+// Estado do voto do usuário (like, deslike ou null)
+let votosUsuario = JSON.parse(localStorage.getItem('votosUsuario')) || {};
+
+// Atualiza a interface ao carregar
+function atualizarLikesDeslikes(id) {
+    document.getElementById('like-' + id).textContent = likes[id];
+    document.getElementById('deslike-' + id).textContent = deslikes[id];
+
+    const likeIcon = document.querySelector('#btn-like-' + id + ' i');
+    const deslikeIcon = document.querySelector('#btn-deslike-' + id + ' i');
+    likeIcon.classList.remove('icone-votado', 'text-primary');
+    deslikeIcon.classList.remove('icone-votado', 'text-primary');
+
+    if (votosUsuario[id] === 'like') {
+        likeIcon.classList.add('icone-votado');
+        deslikeIcon.classList.add('text-primary');
+    } else if (votosUsuario[id] === 'deslike') {
+        deslikeIcon.classList.add('icone-votado');
+        likeIcon.classList.add('text-primary');
+    } else {
+        likeIcon.classList.add('text-primary');
+        deslikeIcon.classList.add('text-primary');
+    }
+}
+
+// Função para dar like
+function darLike(id) {
+    if (votosUsuario[id] === 'like') {
+        // Se já deu like, desfaz o like
+        likes[id]--;
+        votosUsuario[id] = null;
+    } else {
+        if (votosUsuario[id] === 'deslike') {
+            deslikes[id]--;
+        }
+        likes[id]++;
+        votosUsuario[id] = 'like';
+    }
+    localStorage.setItem('votosUsuario', JSON.stringify(votosUsuario));
+    atualizarLikesDeslikes(id);
+}
+
+// Função para dar deslike
+function darDeslike(id) {
+    if (votosUsuario[id] === 'deslike') {
+        // Se já deu deslike, desfaz o deslike
+        deslikes[id]--;
+        votosUsuario[id] = null;
+    } else {
+        if (votosUsuario[id] === 'like') {
+            likes[id]--;
+        }
+        deslikes[id]++;
+        votosUsuario[id] = 'deslike';
+    }
+    localStorage.setItem('votosUsuario', JSON.stringify(votosUsuario));
+    atualizarLikesDeslikes(id);
+}
+
+// Atualiza todos ao carregar a página
+document.addEventListener('DOMContentLoaded', function () {
+    Object.keys(likes).forEach(id => atualizarLikesDeslikes(id));
+});
