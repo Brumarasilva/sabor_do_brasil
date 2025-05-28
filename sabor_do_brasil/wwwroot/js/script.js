@@ -41,6 +41,7 @@ async function carregarPerfilUsuario() {
     const fotoPerfil = document.getElementById('fotoPerfil');
     const nomePerfil = document.getElementById('nomePerfil');
     const curtidasPerfil = document.getElementById('curtidasPerfil');
+    const deslikesPerfil = document.getElementById('deslikesPerfil');
 
     if (idUsuario) {
         const resposta = await fetch(`/api/usuarios/${idUsuario}`);
@@ -49,15 +50,18 @@ async function carregarPerfilUsuario() {
             fotoPerfil.src = usuario.foto && usuario.foto !== "" ? usuario.foto : "img/images__2_-removebg-preview.png";
             nomePerfil.textContent = usuario.nome;
             curtidasPerfil.textContent = usuario.curtidas;
+            deslikesPerfil.textContent = usuario.deslikes;
         } else {
             fotoPerfil.removeAttribute('src');
             nomePerfil.textContent = '@usuario';
             curtidasPerfil.textContent = '0';
+            deslikesPerfil.textContent = '0';
         }
     } else {
         fotoPerfil.removeAttribute('src');
         nomePerfil.textContent = '@usuario';
         curtidasPerfil.textContent = '0';
+        deslikesPerfil.textContent = '0';
     }
 }
 
@@ -183,26 +187,6 @@ let deslikes = { 1: 1, 2: 2, 3: 3 };
 let votosUsuario = JSON.parse(localStorage.getItem('votosUsuario')) || {};
 
 // Atualiza a interface ao carregar
-function atualizarLikesDeslikes(id) {
-    document.getElementById('like-' + id).textContent = likes[id];
-    document.getElementById('deslike-' + id).textContent = deslikes[id];
-
-    const likeIcon = document.querySelector('#btn-like-' + id + ' i');
-    const deslikeIcon = document.querySelector('#btn-deslike-' + id + ' i');
-    likeIcon.classList.remove('icone-votado', 'text-primary');
-    deslikeIcon.classList.remove('icone-votado', 'text-primary');
-
-    if (votosUsuario[id] === 'like') {
-        likeIcon.classList.add('icone-votado');
-        deslikeIcon.classList.add('text-primary');
-    } else if (votosUsuario[id] === 'deslike') {
-        deslikeIcon.classList.add('icone-votado');
-        likeIcon.classList.add('text-primary');
-    } else {
-        likeIcon.classList.add('text-primary');
-        deslikeIcon.classList.add('text-primary');
-    }
-}
 
 // Função para dar like
 function darLike(id) {
@@ -241,4 +225,46 @@ function darDeslike(id) {
 // Atualiza todos ao carregar a página
 document.addEventListener('DOMContentLoaded', function () {
     Object.keys(likes).forEach(id => atualizarLikesDeslikes(id));
+});
+
+function atualizarTotaisPerfil() {
+    // Some todos os likes e deslikes dos cards
+    let totalLikes = 0;
+    let totalDeslikes = 0;
+    Object.values(likes).forEach(v => totalLikes += v);
+    Object.values(deslikes).forEach(v => totalDeslikes += v);
+
+    // Atualize na área do perfil
+    document.getElementById('curtidasPerfil').textContent = totalLikes;
+    document.getElementById('deslikesPerfil').textContent = totalDeslikes;
+}
+
+// Sempre que atualizar likes/deslikes, atualize o perfil também
+function atualizarLikesDeslikes(id) {
+    document.getElementById('like-' + id).textContent = likes[id];
+    document.getElementById('deslike-' + id).textContent = deslikes[id];
+
+    const likeIcon = document.querySelector('#btn-like-' + id + ' i');
+    const deslikeIcon = document.querySelector('#btn-deslike-' + id + ' i');
+    likeIcon.classList.remove('icone-votado', 'text-primary');
+    deslikeIcon.classList.remove('icone-votado', 'text-primary');
+
+    if (votosUsuario[id] === 'like') {
+        likeIcon.classList.add('icone-votado');
+        deslikeIcon.classList.add('text-primary');
+    } else if (votosUsuario[id] === 'deslike') {
+        deslikeIcon.classList.add('icone-votado');
+        likeIcon.classList.add('text-primary');
+    } else {
+        likeIcon.classList.add('text-primary');
+        deslikeIcon.classList.add('text-primary');
+    }
+
+    // Atualiza totais no perfil
+    atualizarTotaisPerfil();
+}
+
+// Atualize os totais ao carregar a página
+document.addEventListener('DOMContentLoaded', function () {
+    atualizarTotaisPerfil();
 });

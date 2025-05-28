@@ -25,15 +25,16 @@
                         <img id="fotoPerfil" alt="Foto do usuário" > 
                         <h2 id="nomePerfil">@usuario</h2>
                         <hr class="linha-laranja">
-                        <div>
-                            <div class="text">
-                                <div class="d-flex justify-content-around mt-3">
-                                    <div class="text-center">
-                                        <i class="bi bi-hand-thumbs-up-fill"></i>
-                                        <span class="fw-normal" id="curtidasPerfil">0</span>
-                                        <p class="mb-0">quantidade de likes</p>
-                                    </div>
-                                </div>
+                        <div class="d-flex justify-content-center gap-4 mt-3">
+                            <div class="text-center">
+                                <i class="bi bi-hand-thumbs-up-fill"></i>
+                                <span class="fw-normal" id="curtidasPerfil">28</span>
+                                <p class="mb-0">likes</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="bi bi-hand-thumbs-down-fill"></i>
+                                <span class="fw-normal" id="deslikesPerfil">7</span>
+                                <p class="mb-0">deslikes</p>
                             </div>
                         </div>
                     </div>
@@ -52,13 +53,16 @@
                         <div class="card-body">
                             <p class="card-text">Este é um prato incrível feito com ingredientes frescos e saborosos.
                                 Ideal para qualquer ocasião.</p>
+                            <!-- Exemplo para Publicação 1 (repita para as outras) -->
                             <div class="text-start d-flex align-items-center gap-3">
                                 <a href="#" class="text-decoration-none" id="btn-like-1" onclick="darLike(1); return false;">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-1">4</span>
+                                    <i class="bi bi-hand-thumbs-up-fill"></i>
                                 </a>
+                                <span id="like-1">4</span>
                                 <a href="#" class="text-decoration-none" id="btn-deslike-1" onclick="darDeslike(1); return false;">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i> <span id="deslike-1">1</span>
+                                    <i class="bi bi-hand-thumbs-down-fill"></i>
                                 </a>
+                                <span id="deslike-1">1</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(1); return false;">
                                     <i class="bi bi-chat-dots"></i> 3
                                 </a>
