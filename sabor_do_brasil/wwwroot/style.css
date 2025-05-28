@@ -1,12 +1,12 @@
 /* Reorganizando e corrigindo o estilo */
 
 .perfil {
-  background-color: white;
-  padding: 20px;
+  background: none !important;
+  padding: 0 !important;
   text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 .perfil img {
@@ -32,7 +32,7 @@
 .linha-colorida {
   width: 50%;
   height: 4px;
-  background-color: #e63946;
+  background-color: #9b242e;
   /* Cor vermelha */
   margin: 15px auto;
 }
@@ -40,8 +40,18 @@
 
 
 .card-img-top {
-  height: 200px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: unset;
+  background: #fff;
+}
+
+@media (max-width: 768px) {
+  .card-img-top {
+    max-height: 200px;
+  }
 }
 
 .card-body {
@@ -59,9 +69,12 @@
 .linha-laranja {
   border: none;
   height: 3px;
-  background-color: orange;
+  background-color:#D97014;
   width: 150px;
   margin: 0 auto;
+}
+hr{
+  opacity: 1;
 }
 
 .botao-entrar {
@@ -133,4 +146,13 @@
 
 .comentarios-abaixo .text-start {
     text-align: left !important;
+}
+
+.card-custom {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }

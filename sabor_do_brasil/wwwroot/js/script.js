@@ -19,6 +19,7 @@ if (window.location.pathname.endsWith('index.html') || window.location.pathname.
                 if (resposta.ok) {
                     const usuario = await resposta.json();
                     localStorage.setItem('usuarioId', usuario.id);
+                    localStorage.setItem('usuarioNome', usuario.nome);
                     window.location.href = "index.html";
                 } else {
                     alert("Usuário ou senha inválidos!");
@@ -73,30 +74,39 @@ function toggleComentarios(id) {
 function renderizarComentarios(id) {
     const lista = document.getElementById('lista-comentarios-' + id);
     const comentarios = comentariosPorPublicacao[id] || [];
+    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
     lista.innerHTML = comentarios.length
         ? `<div class="text-start">` +
-            comentarios.map((c, idx) =>
-                `<div class="d-flex align-items-center justify-content-between mb-1">
-                    <span><strong>${c.usuario}:</strong> ${c.texto}</span>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="editarComentario(${id}, ${idx}); return false;">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="#" onclick="excluirComentario(${id}, ${idx}); return false;">
-                                    <i class="bi bi-trash"></i> Excluir
-                                </a>
-                            </li>
-                        </ul>
+            comentarios.map((c, idx) => {
+                let acoes = '';
+                if (c.usuario === usuarioLogado) {
+                    acoes = `
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="editarComentario(${id}, ${idx}); return false;">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="#" onclick="excluirComentario(${id}, ${idx}); return false;">
+                                        <i class="bi bi-trash"></i> Excluir
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <span><strong>${c.usuario}:</strong> ${c.texto}</span>
+                        ${acoes}
                     </div>
-                </div>`
-            ).join('') +
+                `;
+            }).join('') +
           `</div>`
         : "<p class='text-muted text-start'>Nenhum comentário ainda.</p>";
 }
@@ -106,8 +116,9 @@ function adicionarComentario(event, id) {
     const input = document.getElementById('input-comentario-' + id);
     const texto = input.value.trim();
     if (!texto) return;
+    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
     comentariosPorPublicacao[id] = comentariosPorPublicacao[id] || [];
-    comentariosPorPublicacao[id].push({ usuario: "Usuário", texto });
+    comentariosPorPublicacao[id].push({ usuario: usuarioLogado, texto });
     input.value = '';
     renderizarComentarios(id);
 }
