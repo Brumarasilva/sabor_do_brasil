@@ -186,3 +186,45 @@ hr{
 .bi-heart-fill.text-danger {
     color: #e0245e !important;
 }
+
+a.small, a.small:visited, a.small:active {
+    color: #000 !important;
+    text-decoration: underline dotted;
+}
+
+.btn-link .bi-send {
+    color: #000 !important;
+}
+
+.bi-heart,
+.bi-heart-fill {
+    color: #000 !important;
+    border-color: #000 !important;
+}
+
+.bi-chat-dots {
+    color: #000 !important;
+}
+
+#like-1, #like-2, #like-3,
+#deslike-1, #deslike-2, #deslike-3,
+#deslikesPerfil, #curtidasPerfil {
+    color: #000 !important;
+}
+
+.comentarios-numero,
+.texto-numero-comentario {
+    color: #000 !important;
+}
+
+/* Se os números estão diretamente após o ícone, selecione assim: */
+.bi-chat-dots + span,
+.bi-chat-dots + strong,
+.bi-chat-dots + b {
+    color: #000 !important;
+}
+
+/* Ou, se o número está dentro do link de comentários, selecione: */
+a[title="Ver comentários"] {
+    color: #000 !important;
+}

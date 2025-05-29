@@ -90,14 +90,28 @@ function renderizarComentarios(id) {
             <div>
                 <strong>${c.usuario}:</strong> ${c.texto}
                 <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}); return false;">Responder</a>
+                <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
+                    <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
+                    ${c.curtido ? `<img src="${localStorage.getItem('usuarioFoto') || 'img/images__2_-removebg-preview.png'}" alt="Perfil" class="ms-1 rounded-circle" style="width:20px;height:20px;object-fit:cover;vertical-align:middle;">` : ''}
+                </a>
             </div>
             <div id="resposta-area-${id}-${idx}" style="display:none; margin-top:5px;">
-                <input type="text" class="form-control form-control-sm mb-1" id="input-resposta-${id}-${idx}" placeholder="Digite sua resposta">
-                <button class="btn btn-success btn-sm" onclick="enviarResposta(${id}, ${idx})">Enviar</button>
-                <button class="btn btn-secondary btn-sm" onclick="cancelarResposta(${id}, ${idx})">Cancelar</button>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}" placeholder="Responder a ${c.usuario}">
+                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx})" title="Enviar">
+                        <i class="bi bi-send"></i>
+                    </button>
+                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx})" title="Cancelar">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
             </div>
             <div id="respostas-${id}-${idx}" style="margin-left:20px;">
-                ${(c.respostas || []).map(r => `<div class="small"><strong>${r.usuario}:</strong> ${r.texto}</div>`).join('')}
+                ${(c.respostas || []).map((r, rIdx) => `
+                    <div class="small resposta-item" onclick="excluirResposta(${id}, ${idx}, ${rIdx})" style="cursor:pointer;">
+                        <strong>${r.usuario}:</strong> ${r.texto}
+                    </div>
+                `).join('')}
             </div>
         </div>
     `).join('');
@@ -423,6 +437,13 @@ function enviarResposta(id, idx) {
             comentariosPorPublicacao[id][idx].respostas = [];
         }
         comentariosPorPublicacao[id][idx].respostas.push({ usuario, texto });
+        renderizarComentarios(id);
+    }
+}
+
+function excluirResposta(id, idxComentario, idxResposta) {
+    if (confirm("Deseja excluir esta resposta?")) {
+        comentariosPorPublicacao[id][idxComentario].respostas.splice(idxResposta, 1);
         renderizarComentarios(id);
     }
 }
