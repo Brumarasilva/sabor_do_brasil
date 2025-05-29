@@ -42,21 +42,28 @@ async function carregarPerfilUsuario() {
     const nomePerfil = document.getElementById('nomePerfil');
     const curtidasPerfil = document.getElementById('curtidasPerfil');
     const deslikesPerfil = document.getElementById('deslikesPerfil');
+    const fotoSalva = localStorage.getItem('usuarioFoto');
+    const nomeSalvo = localStorage.getItem('usuarioNome'); // <-- pega o nome salvo
 
     if (idUsuario) {
         const resposta = await fetch(`/api/usuarios/${idUsuario}`);
         if (resposta.ok) {
             const usuario = await resposta.json();
-            fotoPerfil.src = usuario.foto && usuario.foto !== "" ? usuario.foto : "img/images__2_-removebg-preview.png";
-            nomePerfil.textContent = usuario.nome;
+            fotoPerfil.src = fotoSalva || "img/images__2_-removebg-preview.png";
+            nomePerfil.textContent = "@" + ((usuario.nome || nomeSalvo || "usuario").replace(/\s+/g, ''));
             curtidasPerfil.textContent = usuario.curtidas;
             deslikesPerfil.textContent = usuario.deslikes;
         } else {
             fotoPerfil.removeAttribute('src');
-            nomePerfil.textContent = '@usuario';
+            nomePerfil.textContent = "@" + ((nomeSalvo || "usuario").replace(/\s+/g, ''));
             curtidasPerfil.textContent = '0';
             deslikesPerfil.textContent = '0';
         }
+    } else if (fotoSalva || nomeSalvo) {
+        if (fotoSalva) fotoPerfil.src = fotoSalva;
+        nomePerfil.textContent = "@" + ((nomeSalvo || "usuario").replace(/\s+/g, ''));
+        curtidasPerfil.textContent = '0';
+        deslikesPerfil.textContent = '0';
     } else {
         fotoPerfil.removeAttribute('src');
         nomePerfil.textContent = '@usuario';
@@ -104,9 +111,15 @@ function renderizarComentarios(id) {
                         </div>
                     `;
                 }
+                // Coraçãozinho para curtir comentário
                 return `
                     <div class="d-flex align-items-center justify-content-between mb-1">
-                        <span><strong>${c.usuario}:</strong> ${c.texto}</span>
+                        <span>
+                            <strong>${c.usuario}:</strong> ${c.texto}
+                            <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
+                                <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
+                            </a>
+                        </span>
                         ${acoes}
                     </div>
                 `;
@@ -142,6 +155,41 @@ function editarComentario(idPublicacao, idxComentario) {
     }
 }
 
+function editarDescricao(id) {
+    // Mostra o campo de edição e esconde o texto
+    document.getElementById('editar-descricao-area-' + id).style.display = 'block';
+    const p = document.getElementById('descricao-' + id);
+    document.getElementById('input-descricao-' + id).value = p.textContent;
+    p.style.display = 'none';
+}
+
+function cancelarEdicaoDescricao(id) {
+    // Esconde o campo de edição e mostra o texto
+    document.getElementById('editar-descricao-area-' + id).style.display = 'none';
+    document.getElementById('descricao-' + id).style.display = 'block';
+}
+
+function salvarDescricao(id) {
+    const novaDescricao = document.getElementById('input-descricao-' + id).value.trim();
+    if (novaDescricao) {
+        document.getElementById('descricao-' + id).textContent = novaDescricao;
+        // Opcional: salvar no localStorage para manter após recarregar
+        localStorage.setItem('descricaoPub' + id, novaDescricao);
+    }
+    cancelarEdicaoDescricao(id);
+}
+
+// Ao carregar a página, recupere descrições salvas (opcional)
+document.addEventListener('DOMContentLoaded', function () {
+    [1,2,3].forEach(function(id) {
+        const desc = localStorage.getItem('descricaoPub' + id);
+        if (desc) {
+            const p = document.getElementById('descricao-' + id);
+            if (p) p.textContent = desc;
+        }
+    });
+});
+
 const comentariosPorPublicacao = {
     1: [
         { usuario: "Maria", texto: "Adorei esse prato!" },
@@ -160,16 +208,32 @@ const comentariosPorPublicacao = {
 
 if (window.location.pathname.endsWith('cadastro.html')) {
     document.addEventListener('DOMContentLoaded', function () {
+        // Captura a foto e salva em base64 no localStorage
+        const fotoInput = document.getElementById('fotoUsuario');
+        if (fotoInput) {
+            fotoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('usuarioFoto', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
         const form = document.querySelector('form');
         if (form) {
             form.addEventListener('submit', async function (event) {
                 event.preventDefault();
                 const formData = new FormData(form);
+                const nome = document.getElementById('nomeCompleto').value; // <-- pega o nome digitado
                 const resposta = await fetch('/api/usuarios', {
                     method: 'POST',
                     body: formData
                 });
                 if (resposta.ok) {
+                    localStorage.setItem('usuarioNome', nome); // <-- salva o nome no localStorage
                     window.location.href = 'index.html';
                 } else {
                     alert('Erro ao cadastrar usuário!');
@@ -268,3 +332,100 @@ function atualizarLikesDeslikes(id) {
 document.addEventListener('DOMContentLoaded', function () {
     atualizarTotaisPerfil();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nome = (localStorage.getItem('usuarioNome') || "Usuário").replace(/\s+/g, '');
+    const foto = localStorage.getItem('usuarioFoto') || "img/images__2_-removebg-preview.png";
+    [1, 2, 3].forEach(function (id) {
+        const nomeSpan = document.getElementById('nomePub-' + id);
+        const fotoImg = document.getElementById('fotoPub-' + id);
+        if (nomeSpan) nomeSpan.textContent = nome;
+        if (fotoImg) fotoImg.src = foto;
+    });
+});
+
+function curtirComentario(idPublicacao, idxComentario) {
+    const comentario = comentariosPorPublicacao[idPublicacao][idxComentario];
+    comentario.curtido = !comentario.curtido;
+    renderizarComentarios(idPublicacao);
+}
+
+function ocultarCurtidas(id) {
+    // Esconde os elementos de like e deslike
+    document.getElementById('btn-like-' + id).style.display = 'none';
+    document.getElementById('like-' + id).style.display = 'none';
+    document.getElementById('btn-deslike-' + id).style.display = 'none';
+    document.getElementById('deslike-' + id).style.display = 'none';
+    // Mostra o botão de mostrar curtidas
+    document.getElementById('btn-mostrar-curtidas-' + id).style.display = 'inline-block';
+}
+
+function mostrarCurtidas(id) {
+    document.getElementById('btn-like-' + id).style.display = '';
+    document.getElementById('like-' + id).style.display = '';
+    document.getElementById('btn-deslike-' + id).style.display = '';
+    document.getElementById('deslike-' + id).style.display = '';
+    // Esconde o botão de mostrar curtidas
+    document.getElementById('btn-mostrar-curtidas-' + id).style.display = 'none';
+}
+
+function desativarComentarios(id) {
+    // Esconde a área dos comentários
+    var comentarios = document.getElementById('comentarios-abaixo-' + id);
+    if (comentarios) comentarios.style.display = 'none';
+    // Mostra o botão de mostrar comentários
+    document.getElementById('btn-mostrar-comentarios-' + id).style.display = 'inline-block';
+    // Opcional: desabilita o botão de ver comentários
+    var btnComentario = document.querySelector('[onclick="toggleComentarios(' + id + '); return false;"]');
+    if (btnComentario) btnComentario.style.display = 'none';
+}
+
+function mostrarComentarios(id) {
+    var comentarios = document.getElementById('comentarios-abaixo-' + id);
+    if (comentarios) comentarios.style.display = '';
+    // Esconde o botão de mostrar comentários
+    document.getElementById('btn-mostrar-comentarios-' + id).style.display = 'none';
+    // Reabilita o botão de ver comentários
+    var btnComentario = document.querySelector('[onclick="toggleComentarios(' + id + '); return false;"]');
+    if (btnComentario) btnComentario.style.display = '';
+}
+
+// Controle de estado
+let curtidasOcultas = { 1: false, 2: false, 3: false };
+let comentariosOcultos = { 1: false, 2: false, 3: false };
+
+function alternarCurtidas(id) {
+    curtidasOcultas[id] = !curtidasOcultas[id];
+    if (curtidasOcultas[id]) {
+        // Oculta curtidas
+        document.getElementById('btn-like-' + id).style.display = 'none';
+        document.getElementById('like-' + id).style.display = 'none';
+        document.getElementById('btn-deslike-' + id).style.display = 'none';
+        document.getElementById('deslike-' + id).style.display = 'none';
+        document.getElementById('opcao-curtidas-' + id).textContent = 'Mostrar curtidas';
+    } else {
+        // Mostra curtidas
+        document.getElementById('btn-like-' + id).style.display = '';
+        document.getElementById('like-' + id).style.display = '';
+        document.getElementById('btn-deslike-' + id).style.display = '';
+        document.getElementById('deslike-' + id).style.display = '';
+        document.getElementById('opcao-curtidas-' + id).textContent = 'Ocultar número de curtidas';
+    }
+}
+
+function alternarComentarios(id) {
+    comentariosOcultos[id] = !comentariosOcultos[id];
+    const comentarios = document.getElementById('comentarios-abaixo-' + id);
+    const btnComentario = document.querySelector('[onclick="toggleComentarios(' + id + '); return false;"]');
+    if (comentariosOcultos[id]) {
+        // Oculta comentários
+        if (comentarios) comentarios.style.display = 'none';
+        if (btnComentario) btnComentario.style.display = 'none';
+        document.getElementById('opcao-comentarios-' + id).textContent = 'Mostrar comentários';
+    } else {
+        // Mostra comentários
+        if (comentarios) comentarios.style.display = '';
+        if (btnComentario) btnComentario.style.display = '';
+        document.getElementById('opcao-comentarios-' + id).textContent = 'Desativar comentários';
+    }
+}

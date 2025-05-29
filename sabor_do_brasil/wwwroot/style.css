@@ -175,3 +175,17 @@ hr{
 .text-white {
   color: #fff !important;
 }
+
+.btn.btn-light.btn-sm {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn.btn-light.btn-sm i {
+    color: #333; /* ou qualquer cor desejada */
+}
+
+.bi-heart-fill.text-danger {
+    color: #e0245e !important;
+}
