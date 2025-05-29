@@ -44,41 +44,14 @@
                 <div class="col-md-6" ">
                    
                     <!-- Publicação 1 -->
-                    <!-- Topo da publicação (fora do card) -->
-                    <div class="d-flex align-items-center justify-content-between mb-2 mt-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="" id="fotoPub-1" class="rounded-circle" width="40" height="40" alt="Foto do usuário">
-                            <span id="nomePub-1" class="fw-bold"></span>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" id="menu-opcoes-1">
-                                <li><a class="dropdown-item" href="#" onclick="alternarCurtidas(1); return false;" id="opcao-curtidas-1">Ocultar número de curtidas</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="alternarComentarios(1); return false;" id="opcao-comentarios-1">Desativar comentários</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <div class="card card-custom mb-4" style="border: 1px solid #ccc;">
-                        
                         <div>
                             <img src="img/feijão_carne_batata-frita_salada.jpg" class="card-img-top img-fluid"
                                 alt="Imagem do Prato">
                         </div>
                         <div class="card-body">
-                            <p class="card-text" id="descricao-1">Este é um prato incrível feito com ingredientes frescos e saborosos.
-                                Ideal para qualquer ocasião.</p>
-                            <div id="editar-descricao-area-1" style="display:none;">
-                                <textarea id="input-descricao-1" class="form-control mb-2"></textarea>
-                                <button class="btn btn-success btn-sm" onclick="salvarDescricao(1)">Salvar</button>
-                                <button class="btn btn-secondary btn-sm" onclick="cancelarEdicaoDescricao(1)">Cancelar</button>
-                            </div>
-                           
-                            <!-- Exemplo para Publicação 1 -->
-                            <div class="text-start d-flex align-items-center gap-3">
-                              
+                            <!-- Likes, deslikes e comentários ACIMA da descrição -->
+                            <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-1" onclick="darLike(1); return false;">
                                     <i class="bi bi-hand-thumbs-up-fill"></i>
                                 </a>
@@ -90,6 +63,15 @@
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(1); return false;">
                                     <i class="bi bi-chat-dots"></i> 3
                                 </a>
+                            </div>
+                            <!-- Descrição -->
+                            <p class="card-text" id="descricao-1">
+                                Este é um prato incrível feito com ingredientes frescos e saborosos. Ideal para qualquer ocasião.
+                            </p>
+                            <div id="editar-descricao-area-1" style="display:none;">
+                                <textarea id="input-descricao-1" class="form-control mb-2"></textarea>
+                                <button class="btn btn-success btn-sm" onclick="salvarDescricao(1)">Salvar</button>
+                                <button class="btn btn-secondary btn-sm" onclick="cancelarEdicaoDescricao(1)">Cancelar</button>
                             </div>
                             <!-- Área dos comentários -->
                             <div class="comentarios-abaixo mt-2" id="comentarios-abaixo-1" style="display:none;">
@@ -103,33 +85,12 @@
                     </div>
 
                     <!-- Publicação 2 -->
-                    <!-- Topo da publicação (fora do card) -->
-                    <div class="d-flex align-items-center justify-content-between mb-2 mt-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="" id="fotoPub-2" class="rounded-circle" width="40" height="40" alt="Foto do usuário">
-                            <span id="nomePub-2" class="fw-bold"></span>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" id="menu-opcoes-2">
-                                <li><a class="dropdown-item" href="#" onclick="alternarCurtidas(2); return false;" id="opcao-curtidas-2">Ocultar número de curtidas</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="alternarComentarios(2); return false;" id="opcao-comentarios-2">Desativar comentários</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="card card-custom mb-4 "style="border: 1px solid #ccc;">
-                        <!-- Topo da publicação -->
-                       
+                    <div class="card card-custom mb-4" style="border: 1px solid #ccc;">
                         <div>
                             <img src="img/arroz,carne,salada.jpg" class="card-img-top img-fluid" alt="Imagem do Prato">
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Uma deliciosa moqueca de peixe com temperos típicos brasileiros.
-                                Perfeita para um almoço especial.</p>
-                            <div class="text-start d-flex align-items-center gap-3">
+                            <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-2" onclick="darLike(2); return false;">
                                     <i class="bi bi-hand-thumbs-up-fill"></i>
                                 </a>
@@ -142,7 +103,9 @@
                                     <i class="bi bi-chat-dots"></i> 5
                                 </a>
                             </div>
-                            <!-- Área dos comentários -->
+                            <p class="card-text">
+                                Uma deliciosa moqueca de peixe com temperos típicos brasileiros. Perfeita para um almoço especial.
+                            </p>
                             <div class="comentarios-abaixo mt-2" id="comentarios-abaixo-2" style="display:none;">
                                 <div id="lista-comentarios-2"></div>
                                 <form class="mt-2 d-flex" onsubmit="adicionarComentario(event, 2)">
@@ -154,41 +117,12 @@
                     </div>
 
                     <!-- Publicação 3 -->
-                    <!-- Topo da publicação (fora do card) -->
-                    <div class="d-flex align-items-center justify-content-between mb-2 mt-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="" id="fotoPub-3" class="rounded-circle" width="40" height="40" alt="Foto do usuário">
-                            <span id="nomePub-3" class="fw-bold"></span>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" id="menu-opcoes-3">
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="alternarCurtidas(3); return false;" id="opcao-curtidas-3">
-                                        Ocultar número de curtidas
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="alternarComentarios(3); return false;" id="opcao-comentarios-3">
-                                        Desativar comentários
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <div class="card card-custom mb-4" style="border: 1px solid #cccccc;">
-                        <!-- Topo da publicação -->
-                       
                         <div>
                             <img src="img/File-de-Frango.png" class="card-img-top img-fluid" alt="Imagem do Prato">
                         </div>
                         <div class="card-body">
-                            <p class="card-text">A tradicional feijoada brasileira, acompanhada de arroz, couve e
-                                laranja. Um clássico irresistível.</p>
-                            <div class="text-start d-flex align-items-center gap-3">
+                            <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-3" onclick="darLike(3); return false;">
                                     <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-3">15</span>
                                 </a>
@@ -199,7 +133,9 @@
                                     <i class="bi bi-chat-dots"></i> 8
                                 </a>
                             </div>
-                            <!-- Área dos comentários -->
+                            <p class="card-text">
+                                A tradicional feijoada brasileira, acompanhada de arroz, couve e laranja. Um clássico irresistível.
+                            </p>
                             <div class="comentarios-abaixo mt-2" id="comentarios-abaixo-3" style="display:none;">
                                 <div id="lista-comentarios-3"></div>
                                 <form class="mt-2 d-flex" onsubmit="adicionarComentario(event, 3)">

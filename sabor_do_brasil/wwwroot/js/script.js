@@ -85,47 +85,22 @@ function toggleComentarios(id) {
 function renderizarComentarios(id) {
     const lista = document.getElementById('lista-comentarios-' + id);
     const comentarios = comentariosPorPublicacao[id] || [];
-    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
-    lista.innerHTML = comentarios.length
-        ? `<div class="text-start">` +
-            comentarios.map((c, idx) => {
-                let acoes = '';
-                if (c.usuario === usuarioLogado) {
-                    acoes = `
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="editarComentario(${id}, ${idx}); return false;">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-danger" href="#" onclick="excluirComentario(${id}, ${idx}); return false;">
-                                        <i class="bi bi-trash"></i> Excluir
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    `;
-                }
-                // Coraçãozinho para curtir comentário
-                return `
-                    <div class="d-flex align-items-center justify-content-between mb-1">
-                        <span>
-                            <strong>${c.usuario}:</strong> ${c.texto}
-                            <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
-                                <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
-                            </a>
-                        </span>
-                        ${acoes}
-                    </div>
-                `;
-            }).join('') +
-          `</div>`
-        : "<p class='text-muted text-start'>Nenhum comentário ainda.</p>";
+    lista.innerHTML = comentarios.map((c, idx) => `
+        <div class="mb-2">
+            <div>
+                <strong>${c.usuario}:</strong> ${c.texto}
+                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}); return false;">Responder</a>
+            </div>
+            <div id="resposta-area-${id}-${idx}" style="display:none; margin-top:5px;">
+                <input type="text" class="form-control form-control-sm mb-1" id="input-resposta-${id}-${idx}" placeholder="Digite sua resposta">
+                <button class="btn btn-success btn-sm" onclick="enviarResposta(${id}, ${idx})">Enviar</button>
+                <button class="btn btn-secondary btn-sm" onclick="cancelarResposta(${id}, ${idx})">Cancelar</button>
+            </div>
+            <div id="respostas-${id}-${idx}" style="margin-left:20px;">
+                ${(c.respostas || []).map(r => `<div class="small"><strong>${r.usuario}:</strong> ${r.texto}</div>`).join('')}
+            </div>
+        </div>
+    `).join('');
 }
 
 function adicionarComentario(event, id) {
@@ -427,5 +402,27 @@ function alternarComentarios(id) {
         if (comentarios) comentarios.style.display = '';
         if (btnComentario) btnComentario.style.display = '';
         document.getElementById('opcao-comentarios-' + id).textContent = 'Desativar comentários';
+    }
+}
+
+function mostrarResposta(id, idx) {
+    document.getElementById(`resposta-area-${id}-${idx}`).style.display = 'block';
+}
+
+function cancelarResposta(id, idx) {
+    document.getElementById(`resposta-area-${id}-${idx}`).style.display = 'none';
+    document.getElementById(`input-resposta-${id}-${idx}`).value = '';
+}
+
+function enviarResposta(id, idx) {
+    const input = document.getElementById(`input-resposta-${id}-${idx}`);
+    const texto = input.value.trim();
+    if (texto) {
+        const usuario = localStorage.getItem('usuarioNome') || "Usuário";
+        if (!comentariosPorPublicacao[id][idx].respostas) {
+            comentariosPorPublicacao[id][idx].respostas = [];
+        }
+        comentariosPorPublicacao[id][idx].respostas.push({ usuario, texto });
+        renderizarComentarios(id);
     }
 }
