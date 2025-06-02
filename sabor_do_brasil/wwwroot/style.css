@@ -160,6 +160,26 @@ hr{
     text-align: left !important;
 }
 
+.comentarios-abaixo,
+#lista-comentarios-1,
+#lista-comentarios-2,
+#lista-comentarios-3 {
+    text-align: left !important;
+}
+
+.comentario-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.comentario-conteudo {
+    flex: 1;
+    text-align: left;
+    word-break: break-word;
+}
+
 .card-custom {
   max-width: 100%;
   margin: 0;
@@ -227,4 +247,13 @@ a.small, a.small:visited, a.small:active {
 /* Ou, se o número está dentro do link de comentários, selecione: */
 a[title="Ver comentários"] {
     color: #000 !important;
+}
+
+.menu-comentario {
+    min-width: 160px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 15px;
+}
+.menu-comentario div:hover {
+    background: #f5f5f5;
 }

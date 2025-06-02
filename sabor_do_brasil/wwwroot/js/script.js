@@ -85,35 +85,76 @@ function toggleComentarios(id) {
 function renderizarComentarios(id) {
     const lista = document.getElementById('lista-comentarios-' + id);
     const comentarios = comentariosPorPublicacao[id] || [];
+    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
+
+    function renderizarRespostas(respostas, id, idxComentario, nivel = 1) {
+        if (!respostas) return '';
+        return respostas.map((r, rIdx) => `
+            <div class="small resposta-item" style="margin-left:${nivel * 20}px;">
+                <strong>${r.usuario}:</strong> ${r.texto}
+                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}); return false;">Responder</a>
+                <a href="#" class="ms-2" onclick="curtirResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}); return false;">
+                    <i class="bi bi-heart${r.curtido ? '-fill text-danger' : ''}" id="heart-resposta-${id}-${idxComentario}-${rIdx}-${nivel}"></i>
+                </a>
+                ${r.usuario === usuarioLogado ? `
+                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}, this.parentNode); return false;">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </a>
+                    <div id="menu-resposta-${id}-${idxComentario}-${rIdx}-${nivel}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
+                        <div onclick="excluirResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir resposta</div>
+                        <div onclick="editarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" style="padding:8px 16px; cursor:pointer;">Editar resposta</div>
+                    </div>
+                ` : ''}
+                <div id="resposta-area-${id}-${idxComentario}-${rIdx}-${nivel}" style="display:none; margin-top:5px;">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="input-resposta-${id}-${idxComentario}-${rIdx}-${nivel}" placeholder="Responder a ${r.usuario}">
+                        <button class="btn btn-link" onclick="enviarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" title="Enviar">
+                            <i class="bi bi-send"></i>
+                        </button>
+                        <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" title="Cancelar">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+                </div>
+                ${renderizarRespostas(r.respostas, id, idxComentario, nivel + 1)}
+            </div>
+        `).join('');
+    }
+
     lista.innerHTML = comentarios.map((c, idx) => `
-        <div class="mb-2">
-            <div>
+        <div class="mb-2 comentario-linha">
+            <div class="comentario-conteudo">
                 <strong>${c.usuario}:</strong> ${c.texto}
-                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}); return false;">Responder</a>
+                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}, null, 0); return false;">Responder</a>
                 <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
                     <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
                     ${c.curtido ? `<img src="${localStorage.getItem('usuarioFoto') || 'img/images__2_-removebg-preview.png'}" alt="Perfil" class="ms-1 rounded-circle" style="width:20px;height:20px;object-fit:cover;vertical-align:middle;">` : ''}
                 </a>
             </div>
-            <div id="resposta-area-${id}-${idx}" style="display:none; margin-top:5px;">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}" placeholder="Responder a ${c.usuario}">
-                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx})" title="Enviar">
-                        <i class="bi bi-send"></i>
-                    </button>
-                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx})" title="Cancelar">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="respostas-${id}-${idx}" style="margin-left:20px;">
-                ${(c.respostas || []).map((r, rIdx) => `
-                    <div class="small resposta-item" onclick="excluirResposta(${id}, ${idx}, ${rIdx})" style="cursor:pointer;">
-                        <strong>${r.usuario}:</strong> ${r.texto}
+            ${c.usuario === usuarioLogado ? `
+                <div>
+                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuComentario(${id}, ${idx}, this.parentNode); return false;">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </a>
+                    <div id="menu-comentario-${id}-${idx}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
+                        <div onclick="excluirComentario(${id}, ${idx})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir comentário</div>
+                        <div onclick="editarComentario(${id}, ${idx})" style="padding:8px 16px; cursor:pointer;">Editar comentário</div>
                     </div>
-                `).join('')}
+                </div>
+            ` : ''}
+        </div>
+        <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
+                <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
+                    <i class="bi bi-send"></i>
+                </button>
+                <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
+                    <i class="bi bi-x-circle"></i>
+                </button>
             </div>
         </div>
+        ${renderizarRespostas(c.respostas, id, idx)}
     `).join('');
 }
 
@@ -216,13 +257,13 @@ if (window.location.pathname.endsWith('cadastro.html')) {
             form.addEventListener('submit', async function (event) {
                 event.preventDefault();
                 const formData = new FormData(form);
-                const nome = document.getElementById('nomeCompleto').value; // <-- pega o nome digitado
+                const nome = document.getElementById('nomeCompleto').value; // pega o nome digitado
                 const resposta = await fetch('/api/usuarios', {
                     method: 'POST',
                     body: formData
                 });
                 if (resposta.ok) {
-                    localStorage.setItem('usuarioNome', nome); // <-- salva o nome no localStorage
+                    localStorage.setItem('usuarioNome', nome); // salva o nome no localStorage
                     window.location.href = 'index.html';
                 } else {
                     alert('Erro ao cadastrar usuário!');
@@ -419,17 +460,17 @@ function alternarComentarios(id) {
     }
 }
 
-function mostrarResposta(id, idx) {
-    document.getElementById(`resposta-area-${id}-${idx}`).style.display = 'block';
+function mostrarResposta(id, idx, rIdx = null, nivel = 0) {
+    document.getElementById(`resposta-area-${id}-${idx}-${rIdx}-${nivel}`).style.display = 'block';
 }
 
-function cancelarResposta(id, idx) {
-    document.getElementById(`resposta-area-${id}-${idx}`).style.display = 'none';
-    document.getElementById(`input-resposta-${id}-${idx}`).value = '';
+function cancelarResposta(id, idx, rIdx = null, nivel = 0) {
+    document.getElementById(`resposta-area-${id}-${idx}-${rIdx}-${nivel}`).style.display = 'none';
+    document.getElementById(`input-resposta-${id}-${idx}-${rIdx}-${nivel}`).value = '';
 }
 
-function enviarResposta(id, idx) {
-    const input = document.getElementById(`input-resposta-${id}-${idx}`);
+function enviarResposta(id, idx, rIdx = null, nivel = 0) {
+    const input = document.getElementById(`input-resposta-${id}-${idx}-${rIdx}-${nivel}`);
     const texto = input.value.trim();
     if (texto) {
         const usuario = localStorage.getItem('usuarioNome') || "Usuário";
@@ -446,4 +487,59 @@ function excluirResposta(id, idxComentario, idxResposta) {
         comentariosPorPublicacao[id][idxComentario].respostas.splice(idxResposta, 1);
         renderizarComentarios(id);
     }
+}
+
+// --- CADASTRO.HTML ---
+
+if (window.location.pathname.endsWith('cadastro.html')) {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Captura a foto e salva em base64 no localStorage
+        const fotoInput = document.getElementById('fotoUsuario');
+        if (fotoInput) {
+            fotoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('usuarioFoto', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        const form = document.getElementById('formCadastro');
+        if (form) {
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const nome = document.getElementById('nomeCompleto').value; // pega o nome digitado
+                const resposta = await fetch('/api/usuarios', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (resposta.ok) {
+                    localStorage.setItem('usuarioNome', nome); // salva o nome no localStorage
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Erro ao cadastrar usuário!');
+                }
+            });
+        }
+    });
+}
+
+function abrirMenuComentario(id, idx, el) {
+    // Fecha outros menus abertos
+    document.querySelectorAll('.menu-comentario').forEach(m => m.style.display = 'none');
+    // Abre o menu do comentário clicado
+    const menu = document.getElementById(`menu-comentario-${id}-${idx}`);
+    if (menu) menu.style.display = 'block';
+
+    // Fecha ao clicar fora
+    document.addEventListener('click', function fecharMenu(e) {
+        if (!el.contains(e.target)) {
+            menu.style.display = 'none';
+            document.removeEventListener('click', fecharMenu);
+        }
+    });
 }
