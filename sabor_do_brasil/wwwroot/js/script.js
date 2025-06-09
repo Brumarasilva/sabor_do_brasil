@@ -545,30 +545,6 @@ function abrirMenuComentario(id, idx, el) {
     });
 }
 
-function toggleLike(id) {
-    const heart = document.getElementById('heart-' + id);
-    const likeSpan = document.getElementById('like-' + id);
-    let liked = heart.classList.contains('bi-heart-fill');
-
-    if (liked) {
-        heart.classList.remove('bi-heart-fill', 'text-danger');
-        heart.classList.add('bi-heart');
-        likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
-    } else {
-        heart.classList.remove('bi-heart');
-        heart.classList.add('bi-heart-fill', 'text-danger');
-        likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const foto = localStorage.getItem('usuarioFoto') || "img/images__2_-removebg-preview.png";
-    const fotoPerfil = document.getElementById('fotoPerfil');
-    if (fotoPerfil) {
-        fotoPerfil.src = foto;
-    }
-});
-
 function abrirMenuResposta(id, idxComentario, indicesStr, nivel, el) {
     // Fecha outros menus abertos
     document.querySelectorAll('.menu-comentario').forEach(m => m.style.display = 'none');
@@ -588,16 +564,55 @@ function abrirMenuResposta(id, idxComentario, indicesStr, nivel, el) {
     document.addEventListener('click', fecharMenu);
 }
 
-function curtirResposta(id, idxComentario, indicesStr, nivel) {
-    // Navega até a resposta correta
-    let indices = typeof indicesStr === "string" ? indicesStr.split(',').map(Number) : [indicesStr];
-    let resposta = comentariosPorPublicacao[id][idxComentario].respostas;
-    for (let i = 0; i < indices.length - 1; i++) {
-        resposta = resposta[indices[i]].respostas;
+function toggleLike(id) {
+    const heart = document.getElementById('heart-' + id);
+    const likeSpan = document.getElementById('like-' + id);
+    const heartbreak = document.getElementById('heartbreak-' + id);
+    const deslikeSpan = document.getElementById('deslike-' + id);
+
+    let liked = heart.classList.contains('bi-heart-fill');
+    let desliked = heartbreak.classList.contains('text-primary');
+
+    if (liked) {
+        heart.classList.remove('bi-heart-fill', 'text-danger');
+        heart.classList.add('bi-heart');
+        likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
+    } else {
+        heart.classList.remove('bi-heart');
+        heart.classList.add('bi-heart-fill', 'text-danger');
+        likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
+
+        // Se estava deslike, desfaz o deslike
+        if (desliked) {
+            heartbreak.classList.remove('text-primary');
+            deslikeSpan.textContent = Math.max(0, parseInt(deslikeSpan.textContent) - 1);
+        }
     }
-    let r = resposta[indices[indices.length - 1]];
-    r.curtido = !r.curtido;
-    renderizarComentarios(id);
+}
+
+function toggleDeslike(id) {
+    const heartbreak = document.getElementById('heartbreak-' + id);
+    const deslikeSpan = document.getElementById('deslike-' + id);
+    const heart = document.getElementById('heart-' + id);
+    const likeSpan = document.getElementById('like-' + id);
+
+    let desliked = heartbreak.classList.contains('text-primary');
+    let liked = heart.classList.contains('bi-heart-fill');
+
+    if (desliked) {
+        heartbreak.classList.remove('text-primary');
+        deslikeSpan.textContent = Math.max(0, parseInt(deslikeSpan.textContent) - 1);
+    } else {
+        heartbreak.classList.add('text-primary');
+        deslikeSpan.textContent = parseInt(deslikeSpan.textContent) + 1;
+
+        // Se estava like, desfaz o like
+        if (liked) {
+            heart.classList.remove('bi-heart-fill', 'text-danger');
+            heart.classList.add('bi-heart');
+            likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
+        }
+    }
 }
 
 function editarResposta(id, idxComentario, ...indices) {

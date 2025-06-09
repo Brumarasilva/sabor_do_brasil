@@ -257,3 +257,10 @@ a[title="Ver comentários"] {
 .menu-comentario div:hover {
     background: #f5f5f5;
 }
+
+
+
+.input-group.input-group-sm .form-control {
+    border: none !important;
+    box-shadow: none !important;
+}
