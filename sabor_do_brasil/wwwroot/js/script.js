@@ -87,38 +87,42 @@ function renderizarComentarios(id) {
     const comentarios = comentariosPorPublicacao[id] || [];
     const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
 
-    function renderizarRespostas(respostas, id, idxComentario, nivel = 1) {
+    function renderizarRespostas(respostas, id, idxComentario, indices = [], nivel = 1) {
         if (!respostas) return '';
-        return respostas.map((r, rIdx) => `
+        const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
+        return respostas.map((r, rIdx) => {
+            const allIndices = [...indices, rIdx];
+            return `
             <div class="small resposta-item" style="margin-left:${nivel * 20}px;">
                 <strong>${r.usuario}:</strong> ${r.texto}
-                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}); return false;">Responder</a>
-                <a href="#" class="ms-2" onclick="curtirResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}); return false;">
-                    <i class="bi bi-heart${r.curtido ? '-fill text-danger' : ''}" id="heart-resposta-${id}-${idxComentario}-${rIdx}-${nivel}"></i>
+                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">Responder</a>
+                <a href="#" class="ms-2" onclick="curtirResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">
+                    <i class="bi bi-heart${r.curtido ? '-fill text-danger' : ''}" id="heart-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}"></i>
                 </a>
                 ${r.usuario === usuarioLogado ? `
-                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel}, this.parentNode); return false;">
+                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}, this.parentNode); return false;">
                         <i class="bi bi-three-dots-vertical"></i>
                     </a>
-                    <div id="menu-resposta-${id}-${idxComentario}-${rIdx}-${nivel}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
-                        <div onclick="excluirResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir resposta</div>
-                        <div onclick="editarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" style="padding:8px 16px; cursor:pointer;">Editar resposta</div>
+                    <div id="menu-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
+                        <div onclick="excluirResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir resposta</div>
+                        <div onclick="editarResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" style="padding:8px 16px; cursor:pointer;">Editar resposta</div>
                     </div>
                 ` : ''}
-                <div id="resposta-area-${id}-${idxComentario}-${rIdx}-${nivel}" style="display:none; margin-top:5px;">
+                <div id="resposta-area-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" style="display:none; margin-top:5px;">
                     <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" id="input-resposta-${id}-${idxComentario}-${rIdx}-${nivel}" placeholder="Responder a ${r.usuario}">
-                        <button class="btn btn-link" onclick="enviarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" title="Enviar">
+                        <input type="text" class="form-control" id="input-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" placeholder="Responder a ${r.usuario}">
+                        <button class="btn btn-link" onclick="enviarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel})" title="Enviar">
                             <i class="bi bi-send"></i>
                         </button>
-                        <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idxComentario}, ${rIdx}, ${nivel})" title="Cancelar">
+                        <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel})" title="Cancelar">
                             <i class="bi bi-x-circle"></i>
                         </button>
                     </div>
                 </div>
-                ${renderizarRespostas(r.respostas, id, idxComentario, nivel + 1)}
+                ${renderizarRespostas(r.respostas, id, idxComentario, allIndices, nivel + 1)}
             </div>
-        `).join('');
+        `;
+        }).join('');
     }
 
     lista.innerHTML = comentarios.map((c, idx) => `
@@ -338,24 +342,21 @@ function atualizarLikesDeslikes(id) {
     document.getElementById('like-' + id).textContent = likes[id];
     document.getElementById('deslike-' + id).textContent = deslikes[id];
 
-    const likeIcon = document.querySelector('#btn-like-' + id + ' i');
-    const deslikeIcon = document.querySelector('#btn-deslike-' + id + ' i');
-    likeIcon.classList.remove('icone-votado', 'text-primary');
-    deslikeIcon.classList.remove('icone-votado', 'text-primary');
+    const likeIcon = document.getElementById('heart-like-' + id);
+    const deslikeIcon = document.getElementById('heart-deslike-' + id);
+
+    likeIcon.classList.remove('bi-heart-fill', 'text-danger');
+    deslikeIcon.classList.remove('bi-heart-fill', 'text-danger');
+    likeIcon.classList.add('bi-heart');
+    deslikeIcon.classList.add('bi-heart');
 
     if (votosUsuario[id] === 'like') {
-        likeIcon.classList.add('icone-votado');
-        deslikeIcon.classList.add('text-primary');
+        likeIcon.classList.remove('bi-heart');
+        likeIcon.classList.add('bi-heart-fill', 'text-danger');
     } else if (votosUsuario[id] === 'deslike') {
-        deslikeIcon.classList.add('icone-votado');
-        likeIcon.classList.add('text-primary');
-    } else {
-        likeIcon.classList.add('text-primary');
-        deslikeIcon.classList.add('text-primary');
+        deslikeIcon.classList.remove('bi-heart');
+        deslikeIcon.classList.add('bi-heart-fill', 'text-danger');
     }
-
-    // Atualiza totais no perfil
-    atualizarTotaisPerfil();
 }
 
 // Atualize os totais ao carregar a página
@@ -542,4 +543,73 @@ function abrirMenuComentario(id, idx, el) {
             document.removeEventListener('click', fecharMenu);
         }
     });
+}
+
+function toggleLike(id) {
+    const heart = document.getElementById('heart-' + id);
+    const likeSpan = document.getElementById('like-' + id);
+    let liked = heart.classList.contains('bi-heart-fill');
+
+    if (liked) {
+        heart.classList.remove('bi-heart-fill', 'text-danger');
+        heart.classList.add('bi-heart');
+        likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
+    } else {
+        heart.classList.remove('bi-heart');
+        heart.classList.add('bi-heart-fill', 'text-danger');
+        likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const foto = localStorage.getItem('usuarioFoto') || "img/images__2_-removebg-preview.png";
+    const fotoPerfil = document.getElementById('fotoPerfil');
+    if (fotoPerfil) {
+        fotoPerfil.src = foto;
+    }
+});
+
+function abrirMenuResposta(id, idxComentario, indicesStr, nivel, el) {
+    // Fecha outros menus abertos
+    document.querySelectorAll('.menu-comentario').forEach(m => m.style.display = 'none');
+    // Garante que indicesStr é string com hífens
+    const indicesStrSafe = Array.isArray(indicesStr) ? indicesStr.join('-') : String(indicesStr).replace(/,/g, '-');
+    const menuId = `menu-resposta-${id}-${idxComentario}-${indicesStrSafe}-${nivel}`;
+    const menu = document.getElementById(menuId);
+    if (menu) menu.style.display = 'block';
+
+    // Fecha ao clicar fora
+    function fecharMenu(e) {
+        if (!el.contains(e.target)) {
+            menu.style.display = 'none';
+            document.removeEventListener('click', fecharMenu);
+        }
+    }
+    document.addEventListener('click', fecharMenu);
+}
+
+function curtirResposta(id, idxComentario, indicesStr, nivel) {
+    // Navega até a resposta correta
+    let indices = typeof indicesStr === "string" ? indicesStr.split(',').map(Number) : [indicesStr];
+    let resposta = comentariosPorPublicacao[id][idxComentario].respostas;
+    for (let i = 0; i < indices.length - 1; i++) {
+        resposta = resposta[indices[i]].respostas;
+    }
+    let r = resposta[indices[indices.length - 1]];
+    r.curtido = !r.curtido;
+    renderizarComentarios(id);
+}
+
+function editarResposta(id, idxComentario, ...indices) {
+    let respostas = comentariosPorPublicacao[id][idxComentario].respostas;
+    // Navega até a resposta correta
+    for (let i = 0; i < indices.length - 1; i++) {
+        respostas = respostas[indices[i]].respostas;
+    }
+    let resposta = respostas[indices[indices.length - 1]];
+    const novoTexto = prompt("Editar resposta:", resposta.texto);
+    if (novoTexto !== null && novoTexto.trim() !== "") {
+        resposta.texto = novoTexto.trim();
+        renderizarComentarios(id);
+    }
 }

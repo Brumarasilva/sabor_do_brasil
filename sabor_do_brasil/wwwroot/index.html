@@ -22,17 +22,17 @@
                 <div class="col-md-3">
                     <!-- Substitua o conteúdo fixo do perfil por elementos com IDs -->
                     <div class="perfil">
-                        <img id="fotoPerfil" alt="Foto do usuário" > 
+                        <img id="fotoPerfil" alt="Foto do usuário">
                         <h2 id="nomePerfil">@usuario</h2>
                         <hr class="linha-laranja">
                         <div class="d-flex justify-content-center gap-4 mt-3">
                             <div class="text-center">
-                                <i class="bi bi-hand-thumbs-up-fill"></i>
+                                <i class="bi bi-heart-fill"></i>
                                 <span class="fw-normal" id="curtidasPerfil">28</span>
                                 <p class="mb-0">likes</p>
                             </div>
                             <div class="text-center">
-                                <i class="bi bi-hand-thumbs-down-fill"></i>
+                                <i class="bi bi-heartbreak"></i>
                                 <span class="fw-normal" id="deslikesPerfil">7</span>
                                 <p class="mb-0">deslikes</p>
                             </div>
@@ -56,14 +56,10 @@
                         <div class="card-body">
                             <!-- Likes, deslikes e comentários ACIMA da descrição -->
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
-                                <a href="#" class="text-decoration-none" id="btn-like-1" onclick="darLike(1); return false;">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                                <a href="#" class="text-decoration-none" id="btn-like-1" onclick="toggleLike(1); return false;">
+                                    <i class="bi bi-heart" id="heart-1"></i>
                                 </a>
                                 <span id="like-1">4</span>
-                                <a href="#" class="text-decoration-none" id="btn-deslike-1" onclick="darDeslike(1); return false;">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i>
-                                </a>
-                                <span id="deslike-1">1</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(1); return false;">
                                     <i class="bi bi-chat-dots"></i> 3
                                 </a>
@@ -99,14 +95,10 @@
                         </div>
                         <div class="card-body">
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
-                                <a href="#" class="text-decoration-none" id="btn-like-2" onclick="darLike(2); return false;">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                                <a href="#" class="text-decoration-none" id="btn-like-2" onclick="toggleLike(2); return false;">
+                                    <i class="bi bi-heart" id="heart-2"></i>
                                 </a>
                                 <span id="like-2">10</span>
-                                <a href="#" class="text-decoration-none" id="btn-deslike-2" onclick="darDeslike(2); return false;">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i>
-                                </a>
-                                <span id="deslike-2">2</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(2); return false;">
                                     <i class="bi bi-chat-dots"></i> 5
                                 </a>
@@ -135,12 +127,10 @@
                         </div>
                         <div class="card-body">
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
-                                <a href="#" class="text-decoration-none" id="btn-like-3" onclick="darLike(3); return false;">
-                                    <i class="bi bi-hand-thumbs-up-fill"></i> <span id="like-3">15</span>
+                                <a href="#" class="text-decoration-none" id="btn-like-3" onclick="toggleLike(3); return false;">
+                                    <i class="bi bi-heart" id="heart-3"></i>
                                 </a>
-                                <a href="#" class="text-decoration-none" id="btn-deslike-3" onclick="darDeslike(3); return false;">
-                                    <i class="bi bi-hand-thumbs-down-fill"></i> <span id="deslike-3">3</span>
-                                </a>
+                                <span id="like-3">15</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(3); return false;">
                                     <i class="bi bi-chat-dots"></i> 8
                                 </a>
