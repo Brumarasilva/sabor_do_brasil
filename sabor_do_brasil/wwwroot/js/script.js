@@ -565,51 +565,54 @@ function abrirMenuResposta(id, idxComentario, indicesStr, nivel, el) {
 }
 
 function toggleLike(id) {
-    const heart = document.getElementById('heart-' + id);
+    const likeIcon = document.getElementById('like-icon-' + id);
     const likeSpan = document.getElementById('like-' + id);
-    const heartbreak = document.getElementById('heartbreak-' + id);
+    const deslikeIcon = document.getElementById('deslike-icon-' + id);
     const deslikeSpan = document.getElementById('deslike-' + id);
 
-    let liked = heart.classList.contains('bi-heart-fill');
-    let desliked = heartbreak.classList.contains('text-primary');
+    let liked = likeIcon.classList.contains('bi-hand-thumbs-up-fill');
+    let desliked = deslikeIcon.classList.contains('bi-hand-thumbs-down-fill');
 
     if (liked) {
-        heart.classList.remove('bi-heart-fill', 'text-danger');
-        heart.classList.add('bi-heart');
+        likeIcon.classList.remove('bi-hand-thumbs-up-fill', 'text-success');
+        likeIcon.classList.add('bi-hand-thumbs-up');
         likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
     } else {
-        heart.classList.remove('bi-heart');
-        heart.classList.add('bi-heart-fill', 'text-danger');
+        likeIcon.classList.remove('bi-hand-thumbs-up');
+        likeIcon.classList.add('bi-hand-thumbs-up-fill', 'text-success');
         likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
 
         // Se estava deslike, desfaz o deslike
         if (desliked) {
-            heartbreak.classList.remove('text-primary');
+            deslikeIcon.classList.remove('bi-hand-thumbs-down-fill', 'text-danger');
+            deslikeIcon.classList.add('bi-hand-thumbs-down');
             deslikeSpan.textContent = Math.max(0, parseInt(deslikeSpan.textContent) - 1);
         }
     }
 }
 
 function toggleDeslike(id) {
-    const heartbreak = document.getElementById('heartbreak-' + id);
+    const deslikeIcon = document.getElementById('deslike-icon-' + id);
     const deslikeSpan = document.getElementById('deslike-' + id);
-    const heart = document.getElementById('heart-' + id);
+    const likeIcon = document.getElementById('like-icon-' + id);
     const likeSpan = document.getElementById('like-' + id);
 
-    let desliked = heartbreak.classList.contains('text-primary');
-    let liked = heart.classList.contains('bi-heart-fill');
+    let desliked = deslikeIcon.classList.contains('bi-hand-thumbs-down-fill');
+    let liked = likeIcon.classList.contains('bi-hand-thumbs-up-fill');
 
     if (desliked) {
-        heartbreak.classList.remove('text-primary');
+        deslikeIcon.classList.remove('bi-hand-thumbs-down-fill', 'text-danger');
+        deslikeIcon.classList.add('bi-hand-thumbs-down');
         deslikeSpan.textContent = Math.max(0, parseInt(deslikeSpan.textContent) - 1);
     } else {
-        heartbreak.classList.add('text-primary');
+        deslikeIcon.classList.remove('bi-hand-thumbs-down');
+        deslikeIcon.classList.add('bi-hand-thumbs-down-fill', 'text-danger');
         deslikeSpan.textContent = parseInt(deslikeSpan.textContent) + 1;
 
         // Se estava like, desfaz o like
         if (liked) {
-            heart.classList.remove('bi-heart-fill', 'text-danger');
-            heart.classList.add('bi-heart');
+            likeIcon.classList.remove('bi-hand-thumbs-up-fill', 'text-success');
+            likeIcon.classList.add('bi-hand-thumbs-up');
             likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
         }
     }

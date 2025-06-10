@@ -57,9 +57,13 @@
                             <!-- Likes, deslikes e comentários ACIMA da descrição -->
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-1" onclick="toggleLike(1); return false;">
-                                    <i class="bi bi-heart" id="heart-1"></i>
+                                    <i class="bi bi-hand-thumbs-up text-black" id="like-icon-1"></i>
                                 </a>
                                 <span id="like-1">4</span>
+                                <a href="#" class="text-decoration-none" id="btn-deslike-1" onclick="toggleDeslike(1); return false;">
+                                    <i class="bi bi-hand-thumbs-down text-black" id="deslike-icon-1"></i>
+                                </a>
+                                <span id="deslike-1">1</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(1); return false;">
                                     <i class="bi bi-chat-dots"></i> 3
                                 </a>
@@ -96,9 +100,13 @@
                         <div class="card-body">
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-2" onclick="toggleLike(2); return false;">
-                                    <i class="bi bi-heart" id="heart-2"></i>
+                                    <i class="bi bi-hand-thumbs-up text-black" id="like-icon-2"></i>
                                 </a>
                                 <span id="like-2">10</span>
+                                <a href="#" class="text-decoration-none" id="btn-deslike-2" onclick="toggleDeslike(2); return false;">
+                                    <i class="bi bi-hand-thumbs-down text-black" id="deslike-icon-2"></i>
+                                </a>
+                                <span id="deslike-2">2</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(2); return false;">
                                     <i class="bi bi-chat-dots"></i> 5
                                 </a>
@@ -110,7 +118,9 @@
                                 <div id="lista-comentarios-2"></div>
                                 <form class="mt-2 d-flex" onsubmit="adicionarComentario(event, 2)">
                                     <input type="text" class="form-control me-2" id="input-comentario-2" placeholder="Digite seu comentário">
-                                    <button type="submit" class="btn btn-primary">Comentar</button>
+                                    <button type="submit" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-send"></i>
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -128,9 +138,13 @@
                         <div class="card-body">
                             <div class="text-start d-flex align-items-center gap-3 mb-2">
                                 <a href="#" class="text-decoration-none" id="btn-like-3" onclick="toggleLike(3); return false;">
-                                    <i class="bi bi-heart" id="heart-3"></i>
+                                    <i class="bi bi-hand-thumbs-up text-black" id="like-icon-3"></i>
                                 </a>
                                 <span id="like-3">15</span>
+                                <a href="#" class="text-decoration-none" id="btn-deslike-3" onclick="toggleDeslike(3); return false;">
+                                    <i class="bi bi-hand-thumbs-down text-black" id="deslike-icon-3"></i>
+                                </a>
+                                <span id="deslike-3">3</span>
                                 <a href="#" class="text-decoration-none" title="Ver comentários" onclick="toggleComentarios(3); return false;">
                                     <i class="bi bi-chat-dots"></i> 8
                                 </a>
