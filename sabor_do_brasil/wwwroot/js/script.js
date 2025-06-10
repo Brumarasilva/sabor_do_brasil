@@ -364,15 +364,33 @@ document.addEventListener('DOMContentLoaded', function () {
     atualizarTotaisPerfil();
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const nome = (localStorage.getItem('usuarioNome') || "Usuário").replace(/\s+/g, '');
-    const foto = localStorage.getItem('usuarioFoto') || "img/images__2_-removebg-preview.png";
-    [1, 2, 3].forEach(function (id) {
-        const nomeSpan = document.getElementById('nomePub-' + id);
-        const fotoImg = document.getElementById('fotoPub-' + id);
-        if (nomeSpan) nomeSpan.textContent = nome;
-        if (fotoImg) fotoImg.src = foto;
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Busca o nome cadastrado no localStorage
+    const nomeUsuario = localStorage.getItem('usuarioNome') || 'Usuário';
+    // Atualiza o nome no perfil (sem @)
+    const nomeUsuarioDinamico = document.getElementById('nomeUsuarioDinamico');
+    if (nomeUsuarioDinamico) nomeUsuarioDinamico.textContent = nomeUsuario;
+    // Atualiza também nas publicações
+    for (let i = 1; i <= 3; i++) {
+        const nomePub = document.getElementById('nomePub-' + i);
+        if (nomePub) nomePub.textContent = nomeUsuario;
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Busca a foto salva no localStorage (ou backend, se for o caso)
+    const fotoUsuario = localStorage.getItem('usuarioFoto'); // Corrigido para 'usuarioFoto'
+    if (fotoUsuario) {
+        // Atualiza a foto do perfil principal
+        const fotoPerfil = document.getElementById('fotoPerfil');
+        if (fotoPerfil) fotoPerfil.src = fotoUsuario;
+
+        // Atualiza a foto das publicações (exemplo para 3 publicações)
+        for (let i = 1; i <= 3; i++) {
+            const fotoPub = document.getElementById('fotoPub-' + i);
+            if (fotoPub) fotoPub.src = fotoUsuario;
+        }
+    }
 });
 
 function curtirComentario(idPublicacao, idxComentario) {
@@ -631,3 +649,12 @@ function editarResposta(id, idxComentario, ...indices) {
         renderizarComentarios(id);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Atualiza o nome do usuário dinâmico no perfil
+    const nomeUsuario = localStorage.getItem('usuarioNome') || localStorage.getItem('usuarioLogado') || 'Usuário';
+    const nomeUsuarioDinamico = document.getElementById('nomeUsuarioDinamico');
+    if (nomeUsuarioDinamico) {
+        nomeUsuarioDinamico.textContent = nomeUsuario;
+    }
+});
