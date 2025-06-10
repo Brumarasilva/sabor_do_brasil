@@ -599,14 +599,13 @@ function toggleLike(id) {
         likeIcon.classList.remove('bi-hand-thumbs-up');
         likeIcon.classList.add('bi-hand-thumbs-up-fill', 'text-success');
         likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
-
-        // Se estava deslike, desfaz o deslike
         if (desliked) {
             deslikeIcon.classList.remove('bi-hand-thumbs-down-fill', 'text-danger');
             deslikeIcon.classList.add('bi-hand-thumbs-down');
             deslikeSpan.textContent = Math.max(0, parseInt(deslikeSpan.textContent) - 1);
         }
     }
+    atualizarContadorPerfil();
 }
 
 function toggleDeslike(id) {
@@ -626,14 +625,27 @@ function toggleDeslike(id) {
         deslikeIcon.classList.remove('bi-hand-thumbs-down');
         deslikeIcon.classList.add('bi-hand-thumbs-down-fill', 'text-danger');
         deslikeSpan.textContent = parseInt(deslikeSpan.textContent) + 1;
-
-        // Se estava like, desfaz o like
         if (liked) {
             likeIcon.classList.remove('bi-hand-thumbs-up-fill', 'text-success');
             likeIcon.classList.add('bi-hand-thumbs-up');
             likeSpan.textContent = Math.max(0, parseInt(likeSpan.textContent) - 1);
         }
     }
+    atualizarContadorPerfil();
+}
+
+function atualizarContadorPerfil() {
+    // Soma todos os likes e deslikes dos cards
+    let totalLikes = 0;
+    let totalDeslikes = 0;
+    for (let i = 1; i <= 3; i++) {
+        const like = parseInt(document.getElementById('like-' + i).textContent) || 0;
+        const deslike = parseInt(document.getElementById('deslike-' + i).textContent) || 0;
+        totalLikes += like;
+        totalDeslikes += deslike;
+    }
+    document.getElementById('curtidasPerfil').textContent = totalLikes;
+    document.getElementById('deslikesPerfil').textContent = totalDeslikes;
 }
 
 function editarResposta(id, idxComentario, ...indices) {
