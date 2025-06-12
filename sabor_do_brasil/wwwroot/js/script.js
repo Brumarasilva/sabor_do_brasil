@@ -89,39 +89,25 @@ function renderizarComentarios(id) {
 
     function renderizarRespostas(respostas, id, idxComentario, indices = [], nivel = 1) {
         if (!respostas) return '';
-        const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
         return respostas.map((r, rIdx) => {
             const allIndices = [...indices, rIdx];
-            return `
-            <div class="small resposta-item" style="margin-left:${nivel * 20}px;">
-                <strong>${r.usuario}:</strong> ${r.texto}
-                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">Responder</a>
-                <a href="#" class="ms-2" onclick="curtirResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">
-                    <i class="bi bi-heart${r.curtido ? '-fill text-danger' : ''}" id="heart-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}"></i>
-                </a>
-                ${r.usuario === usuarioLogado ? `
-                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}, this.parentNode); return false;">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </a>
-                    <div id="menu-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
-                        <div onclick="excluirResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir resposta</div>
-                        <div onclick="editarResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" style="padding:8px 16px; cursor:pointer;">Editar resposta</div>
-                    </div>
-                ` : ''}
-                <div id="resposta-area-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" style="display:none; margin-top:5px;">
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" id="input-resposta-${id}-${idxComentario}-${allIndices.join('-')}-${nivel}" placeholder="Responder a ${r.usuario}">
-                        <button class="btn btn-link" onclick="enviarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel})" title="Enviar">
-                            <i class="bi bi-send"></i>
-                        </button>
-                        <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel})" title="Cancelar">
-                            <i class="bi bi-x-circle"></i>
-                        </button>
-                    </div>
+            // Se for do usuário logado, permite excluir clicando no texto
+            if (r.usuario === usuarioLogado) {
+                return `
+                <div class="small resposta-item resposta-excluivel" style="margin-left:${nivel * 20}px; cursor:pointer;" onclick="excluirResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" title='Clique para excluir sua resposta'>
+                    <strong>${r.usuario}:</strong> ${r.texto}
                 </div>
                 ${renderizarRespostas(r.respostas, id, idxComentario, allIndices, nivel + 1)}
-            </div>
-        `;
+                `;
+            } else {
+                return `
+                <div class="small resposta-item" style="margin-left:${nivel * 20}px;">
+                    <strong>${r.usuario}:</strong> ${r.texto}
+                    <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">Responder</a>
+                </div>
+                ${renderizarRespostas(r.respostas, id, idxComentario, allIndices, nivel + 1)}
+                `;
+            }
         }).join('');
     }
 
@@ -140,10 +126,6 @@ function renderizarComentarios(id) {
                     <a href="#" class="ms-2" title="Opções" onclick="abrirMenuComentario(${id}, ${idx}, this.parentNode); return false;">
                         <i class="bi bi-three-dots-vertical"></i>
                     </a>
-                    <div id="menu-comentario-${id}-${idx}" class="menu-comentario" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:6px; z-index:10; right:0; top:25px;">
-                        <div onclick="excluirComentario(${id}, ${idx})" style="padding:8px 16px; cursor:pointer; color:#e0245e;">Excluir comentário</div>
-                        <div onclick="editarComentario(${id}, ${idx})" style="padding:8px 16px; cursor:pointer;">Editar comentário</div>
-                    </div>
                 </div>
             ` : ''}
         </div>
