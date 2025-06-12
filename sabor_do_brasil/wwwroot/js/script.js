@@ -111,37 +111,54 @@ function renderizarComentarios(id) {
         }).join('');
     }
 
-    lista.innerHTML = comentarios.map((c, idx) => `
-        <div class="mb-2 comentario-linha">
-            <div class="comentario-conteudo">
-                <strong>${c.usuario}:</strong> ${c.texto}
-                <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}, null, 0); return false;">Responder</a>
-                <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
-                    <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
-                    ${c.curtido ? `<img src="${localStorage.getItem('usuarioFoto') || 'img/images__2_-removebg-preview.png'}" alt="Perfil" class="ms-1 rounded-circle" style="width:20px;height:20px;object-fit:cover;vertical-align:middle;">` : ''}
-                </a>
+    lista.innerHTML = comentarios.map((c, idx) => {
+        if (c.usuario === usuarioLogado) {
+            return `
+            <div class="mb-2 comentario-linha comentario-excluivel" style="cursor:pointer;" onclick="excluirComentario(${id}, ${idx})" title='Clique para excluir seu comentário'>
+                <div class="comentario-conteudo">
+                    <strong>${c.usuario}:</strong> ${c.texto}
+                </div>
             </div>
-            ${c.usuario === usuarioLogado ? `
-                <div>
-                    <a href="#" class="ms-2" title="Opções" onclick="abrirMenuComentario(${id}, ${idx}, this.parentNode); return false;">
-                        <i class="bi bi-three-dots-vertical"></i>
+            <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
+                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
+                        <i class="bi bi-send"></i>
+                    </button>
+                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+            </div>
+            ${renderizarRespostas(c.respostas, id, idx)}
+            `;
+        } else {
+            return `
+            <div class="mb-2 comentario-linha">
+                <div class="comentario-conteudo">
+                    <strong>${c.usuario}:</strong> ${c.texto}
+                    <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}, null, 0); return false;">Responder</a>
+                    <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
+                        <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
+                        ${c.curtido ? `<img src="${localStorage.getItem('usuarioFoto') || 'img/images__2_-removebg-preview.png'}" alt="Perfil" class="ms-1 rounded-circle" style="width:20px;height:20px;object-fit:cover;vertical-align:middle;">` : ''}
                     </a>
                 </div>
-            ` : ''}
-        </div>
-        <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
-            <div class="input-group input-group-sm">
-                <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
-                <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
-                    <i class="bi bi-send"></i>
-                </button>
-                <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
-                    <i class="bi bi-x-circle"></i>
-                </button>
             </div>
-        </div>
-        ${renderizarRespostas(c.respostas, id, idx)}
-    `).join('');
+            <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
+                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
+                        <i class="bi bi-send"></i>
+                    </button>
+                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+            </div>
+            ${renderizarRespostas(c.respostas, id, idx)}
+            `;
+        }
+    }).join('');
 }
 
 function adicionarComentario(event, id) {
