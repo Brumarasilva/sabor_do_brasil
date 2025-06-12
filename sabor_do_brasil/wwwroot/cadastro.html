@@ -76,7 +76,25 @@
     </div>
   </footer>
 
-  <script src="js/script.js"></script>
+  <script>
+    document.querySelector('form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        const resposta = await fetch('/api/usuarios', {
+            method: 'POST',
+            body: formData // Não defina o Content-Type, o navegador faz isso automaticamente!
+        });
+
+        if (resposta.ok) {
+            window.location.href = 'index.html';
+        } else {
+            alert('Erro ao cadastrar usuário!');
+        }
+    });
+  </script>
 </body>
 
 </html>

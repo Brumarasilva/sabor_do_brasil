@@ -40,6 +40,8 @@ function logout() {
     }
 }
 
+// Ao carregar o perfil, se não houver usuário logado, exibe apenas a empresa
+// Se houver usuário logado, exibe apenas o perfil do usuário
 async function carregarPerfilUsuario() {
     const idUsuario = localStorage.getItem('usuarioId');
     const fotoPerfil = document.getElementById('fotoPerfil');
@@ -55,8 +57,8 @@ async function carregarPerfilUsuario() {
             const usuario = await resposta.json();
             fotoPerfil.src = fotoSalva || "img/images__2_-removebg-preview.png";
             nomePerfil.textContent = "@" + ((usuario.nome || nomeSalvo || "usuario").replace(/\s+/g, ''));
-            curtidasPerfil.textContent = usuario.curtidas;
-            deslikesPerfil.textContent = usuario.deslikes;
+            curtidasPerfil.textContent = '0'; // Zera likes
+            deslikesPerfil.textContent = '0'; // Zera deslikes
         } else {
             fotoPerfil.removeAttribute('src');
             nomePerfil.textContent = "@" + ((nomeSalvo || "usuario").replace(/\s+/g, ''));
@@ -69,271 +71,50 @@ async function carregarPerfilUsuario() {
             const resposta = await fetch('/api/empresa/1');
             if (resposta.ok) {
                 const empresa = await resposta.json();
-                fotoPerfil.src = empresa.foto || "img/images__2_-removebg-preview.png";
-                nomePerfil.textContent = empresa.nome ? "@" + empresa.nome.replace(/\s+/g, '') : '@empresa';
-                // Se quiser mostrar curtidas/deslikes da empresa, pode buscar de outra rota ou deixar 0
-                curtidasPerfil.textContent = '0';
-                deslikesPerfil.textContent = '0';
+                let fotoEmpresa = empresa.foto;
+                if (fotoEmpresa && !fotoEmpresa.startsWith('http') && !fotoEmpresa.startsWith('/')) {
+                    fotoEmpresa = '/img/' + fotoEmpresa;
+                }
+                fotoPerfil.src = fotoEmpresa || "/img/images__2_-removebg-preview.png";
+                nomePerfil.textContent = empresa.nome ? "@" + empresa.nome.replace(/\s+/g, '') : '@sabordobrasil';
+                curtidasPerfil.textContent = '0'; // Zera likes
+                deslikesPerfil.textContent = '0'; // Zera deslikes
             } else {
-                fotoPerfil.removeAttribute('src');
-                nomePerfil.textContent = '@empresa';
+                fotoPerfil.src = "/img/images__2_-removebg-preview.png";
+                nomePerfil.textContent = '@sabordobrasil';
                 curtidasPerfil.textContent = '0';
                 deslikesPerfil.textContent = '0';
             }
         } catch (e) {
-            fotoPerfil.removeAttribute('src');
-            nomePerfil.textContent = '@empresa';
+            fotoPerfil.src = "/img/images__2_-removebg-preview.png";
+            nomePerfil.textContent = '@sabordobrasil';
             curtidasPerfil.textContent = '0';
             deslikesPerfil.textContent = '0';
         }
     }
 }
 
-function toggleComentarios(id) {
-    const area = document.getElementById('comentarios-abaixo-' + id);
-    if (area.style.display === 'none' || area.style.display === '') {
-        area.style.display = 'block';
-        renderizarComentarios(id);
-    } else {
-        area.style.display = 'none';
-    }
-}
+// Zera likes e comentários visualmente ao carregar
+let likes = { 1: 0, 2: 0, 3: 0 };
+let deslikes = { 1: 0, 2: 0, 3: 0 };
+const comentariosPorPublicacao = { 1: [], 2: [], 3: [] };
 
-function renderizarComentarios(id) {
-    const lista = document.getElementById('lista-comentarios-' + id);
-    const comentarios = comentariosPorPublicacao[id] || [];
-    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
-
-    function renderizarRespostas(respostas, id, idxComentario, indices = [], nivel = 1) {
-        if (!respostas) return '';
-        return respostas.map((r, rIdx) => {
-            const allIndices = [...indices, rIdx];
-            // Se for do usuário logado, permite excluir clicando no texto
-            if (r.usuario === usuarioLogado) {
-                return `
-                <div class="small resposta-item resposta-excluivel" style="margin-left:${nivel * 20}px; cursor:pointer;" onclick="excluirResposta(${id}, ${idxComentario}, ${allIndices.join(',')})" title='Clique para excluir sua resposta'>
-                    <strong>${r.usuario}:</strong> ${r.texto}
-                </div>
-                ${renderizarRespostas(r.respostas, id, idxComentario, allIndices, nivel + 1)}
-                `;
-            } else {
-                return `
-                <div class="small resposta-item" style="margin-left:${nivel * 20}px;">
-                    <strong>${r.usuario}:</strong> ${r.texto}
-                    <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idxComentario}, ${allIndices.join(',')}, ${nivel}); return false;">Responder</a>
-                </div>
-                ${renderizarRespostas(r.respostas, id, idxComentario, allIndices, nivel + 1)}
-                `;
-            }
-        }).join('');
-    }
-
-    lista.innerHTML = comentarios.map((c, idx) => {
-        if (c.usuario === usuarioLogado) {
-            return `
-            <div class="mb-2 comentario-linha comentario-excluivel" style="cursor:pointer;" onclick="excluirComentario(${id}, ${idx})" title='Clique para excluir seu comentário'>
-                <div class="comentario-conteudo">
-                    <strong>${c.usuario}:</strong> ${c.texto}
-                </div>
-            </div>
-            <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
-                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
-                        <i class="bi bi-send"></i>
-                    </button>
-                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-            </div>
-            ${renderizarRespostas(c.respostas, id, idx)}
-            `;
-        } else {
-            return `
-            <div class="mb-2 comentario-linha">
-                <div class="comentario-conteudo">
-                    <strong>${c.usuario}:</strong> ${c.texto}
-                    <a href="#" class="ms-2 small" onclick="mostrarResposta(${id}, ${idx}, null, 0); return false;">Responder</a>
-                    <a href="#" class="ms-2" onclick="curtirComentario(${id}, ${idx}); return false;">
-                        <i class="bi bi-heart${c.curtido ? '-fill text-danger' : ''}" id="heart-comentario-${id}-${idx}"></i>
-                        ${c.curtido ? `<img src="${localStorage.getItem('usuarioFoto') || 'img/images__2_-removebg-preview.png'}" alt="Perfil" class="ms-1 rounded-circle" style="width:20px;height:20px;object-fit:cover;vertical-align:middle;">` : ''}
-                    </a>
-                </div>
-            </div>
-            <div id="resposta-area-${id}-${idx}-null-0" style="display:none; margin-top:5px;">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" id="input-resposta-${id}-${idx}-null-0" placeholder="Responder a ${c.usuario}">
-                    <button class="btn btn-link" onclick="enviarResposta(${id}, ${idx}, null, 0)" title="Enviar">
-                        <i class="bi bi-send"></i>
-                    </button>
-                    <button class="btn btn-link text-danger" onclick="cancelarResposta(${id}, ${idx}, null, 0)" title="Cancelar">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-            </div>
-            ${renderizarRespostas(c.respostas, id, idx)}
-            `;
-        }
-    }).join('');
-}
-
-function adicionarComentario(event, id) {
-    event.preventDefault();
-    const input = document.getElementById('input-comentario-' + id);
-    const texto = input.value.trim();
-    if (!texto) return;
-    const usuarioLogado = localStorage.getItem('usuarioNome') || "Usuário";
-    comentariosPorPublicacao[id] = comentariosPorPublicacao[id] || [];
-    comentariosPorPublicacao[id].push({ usuario: usuarioLogado, texto });
-    input.value = '';
-    renderizarComentarios(id);
-}
-
-function excluirComentario(idPublicacao, idxComentario) {
-    if (confirm("Deseja realmente excluir este comentário?")) {
-        comentariosPorPublicacao[idPublicacao].splice(idxComentario, 1);
-        renderizarComentarios(idPublicacao);
-    }
-}
-
-function editarComentario(idPublicacao, idxComentario) {
-    const novoTexto = prompt("Editar comentário:", comentariosPorPublicacao[idPublicacao][idxComentario].texto);
-    if (novoTexto !== null && novoTexto.trim() !== "") {
-        comentariosPorPublicacao[idPublicacao][idxComentario].texto = novoTexto.trim();
-        renderizarComentarios(idPublicacao);
-    }
-}
-
-function editarDescricao(id) {
-    // Mostra o campo de edição e esconde o texto
-    document.getElementById('editar-descricao-area-' + id).style.display = 'block';
-    const p = document.getElementById('descricao-' + id);
-    document.getElementById('input-descricao-' + id).value = p.textContent;
-    p.style.display = 'none';
-}
-
-function cancelarEdicaoDescricao(id) {
-    // Esconde o campo de edição e mostra o texto
-    document.getElementById('editar-descricao-area-' + id).style.display = 'none';
-    document.getElementById('descricao-' + id).style.display = 'block';
-}
-
-function salvarDescricao(id) {
-    const novaDescricao = document.getElementById('input-descricao-' + id).value.trim();
-    if (novaDescricao) {
-        document.getElementById('descricao-' + id).textContent = novaDescricao;
-        // Opcional: salvar no localStorage para manter após recarregar
-        localStorage.setItem('descricaoPub' + id, novaDescricao);
-    }
-    cancelarEdicaoDescricao(id);
-}
-
-// Ao carregar a página, recupere descrições salvas (opcional)
-document.addEventListener('DOMContentLoaded', function () {
-    [1,2,3].forEach(function(id) {
-        const desc = localStorage.getItem('descricaoPub' + id);
-        if (desc) {
-            const p = document.getElementById('descricao-' + id);
-            if (p) p.textContent = desc;
-        }
-    });
-});
-
-const comentariosPorPublicacao = {
-    1: [
-        { usuario: "Maria", texto: "Adorei esse prato!" },
-        { usuario: "João", texto: "Muito saboroso!" }
-    ],
-    2: [
-        { usuario: "Ana", texto: "Moqueca maravilhosa!" }
-    ],
-    3: [
-        { usuario: "Carlos", texto: "Feijoada top demais!" },
-        { usuario: "Bruna", texto: "Amo feijoada!" }
-    ]
-};
-
-// --- CADASTRO.HTML ---
-
-if (window.location.pathname.endsWith('cadastro.html')) {
-    document.addEventListener('DOMContentLoaded', function () {
-        // Captura a foto e salva em base64 no localStorage
-        const fotoInput = document.getElementById('fotoUsuario');
-        if (fotoInput) {
-            fotoInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('usuarioFoto', e.target.result);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', async function (event) {
-                event.preventDefault();
-                const formData = new FormData(form);
-                const nome = document.getElementById('nomeCompleto').value; // pega o nome digitado
-                const resposta = await fetch('/api/usuarios', {
-                    method: 'POST',
-                    body: formData
-                });
-                if (resposta.ok) {
-                    localStorage.setItem('usuarioNome', nome); // salva o nome no localStorage
-                    window.location.href = 'index.html';
-                } else {
-                    alert('Erro ao cadastrar usuário!');
-                }
-            });
-        }
-    });
-}
-
-// Valores iniciais
-let likes = { 1: 4, 2: 10, 3: 15 };
-let deslikes = { 1: 1, 2: 2, 3: 3 };
-
-// Estado do voto do usuário (like, deslike ou null)
-let votosUsuario = JSON.parse(localStorage.getItem('votosUsuario')) || {};
+// Função para dar like (desativada)
+function darLike(id) { return; }
+function darDeslike(id) { return; }
 
 // Atualiza a interface ao carregar
 
-// Função para dar like
+// Função para dar like (desativada)
 function darLike(id) {
-    if (votosUsuario[id] === 'like') {
-        // Se já deu like, desfaz o like
-        likes[id]--;
-        votosUsuario[id] = null;
-    } else {
-        if (votosUsuario[id] === 'deslike') {
-            deslikes[id]--;
-        }
-        likes[id]++;
-        votosUsuario[id] = 'like';
-    }
-    localStorage.setItem('votosUsuario', JSON.stringify(votosUsuario));
-    atualizarLikesDeslikes(id);
+    // Curtidas desativadas
+    return;
 }
 
-// Função para dar deslike
+// Função para dar deslike (desativada)
 function darDeslike(id) {
-    if (votosUsuario[id] === 'deslike') {
-        // Se já deu deslike, desfaz o deslike
-        deslikes[id]--;
-        votosUsuario[id] = null;
-    } else {
-        if (votosUsuario[id] === 'like') {
-            likes[id]--;
-        }
-        deslikes[id]++;
-        votosUsuario[id] = 'deslike';
-    }
-    localStorage.setItem('votosUsuario', JSON.stringify(votosUsuario));
-    atualizarLikesDeslikes(id);
+    // Deslikes desativados
+    return;
 }
 
 // Atualiza todos ao carregar a página
@@ -686,3 +467,110 @@ document.addEventListener('DOMContentLoaded', function() {
         nomeUsuarioDinamico.textContent = nomeUsuario;
     }
 });
+
+// Remove visualmente o campo telefone do cadastro.html via JS
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove o campo telefone se existir
+    var telefoneInput = document.querySelector('input[type="tel"], input[name*="tel"], input[name*="fone"], input[id*="tel"], input[id*="fone"]');
+    if (telefoneInput) {
+        var formGroup = telefoneInput.closest('.mb-3, .form-group, div');
+        if (formGroup) formGroup.style.display = 'none';
+        else telefoneInput.style.display = 'none';
+    }
+});
+
+// Zera likes, deslikes e comentários visualmente ao carregar
+
+document.addEventListener('DOMContentLoaded', function () {
+    for (let i = 1; i <= 3; i++) {
+        // Zera likes/deslikes visualmente
+        const likeSpan = document.getElementById('like-' + i);
+        const deslikeSpan = document.getElementById('deslike-' + i);
+        if (likeSpan) likeSpan.textContent = '0';
+        if (deslikeSpan) deslikeSpan.textContent = '0';
+        // Zera comentários visualmente
+        const listaComentarios = document.getElementById('lista-comentarios-' + i);
+        if (listaComentarios) listaComentarios.innerHTML = '';
+    }
+});
+
+// Desativa visualmente os botões de like/deslike ao carregar a página
+// (Removido para reativar os botões)
+// document.addEventListener('DOMContentLoaded', function () {
+//     for (let i = 1; i <= 3; i++) {
+//         const btnLike = document.getElementById('btn-like-' + i);
+//         const btnDeslike = document.getElementById('btn-deslike-' + i);
+//         if (btnLike) {
+//             btnLike.style.pointerEvents = 'none';
+//             btnLike.style.opacity = '0.5';
+//             btnLike.title = 'Curtidas desativadas';
+//         }
+//         if (btnDeslike) {
+//             btnDeslike.style.pointerEvents = 'none';
+//             btnDeslike.style.opacity = '0.5';
+//             btnDeslike.title = 'Deslikes desativados';
+//         }
+//     }
+// });
+
+// --- SEÇÃO DE COMENTÁRIOS UNIFICADA PARA AS TRÊS PUBLICAÇÕES ---
+
+const comentariosPublicacoes = {
+    1: [
+        { usuario: 'Maria', texto: 'Adorei esse prato!' },
+        { usuario: 'João', texto: 'Muito saboroso, recomendo.' }
+    ],
+    2: [
+        { usuario: 'Ana', texto: 'Essa moqueca está linda!' },
+        { usuario: 'Carlos', texto: 'Já comi, é maravilhosa.' }
+    ],
+    3: [
+        { usuario: 'Bruna', texto: 'Feijoada top demais!' },
+        { usuario: 'Pedro', texto: 'Clássico brasileiro, nota 10.' }
+    ]
+};
+
+function renderizarComentariosPublicacao(id) {
+    const lista = document.getElementById('lista-comentarios-' + id);
+    if (!lista) return;
+    lista.innerHTML = '';
+    comentariosPublicacoes[id].forEach(comentario => {
+        const div = document.createElement('div');
+        div.className = 'comentario-item';
+        div.innerHTML = `<b>${comentario.usuario}:</b> ${comentario.texto}`;
+        lista.appendChild(div);
+    });
+}
+
+function adicionarComentario(event, id) {
+    event.preventDefault();
+    const input = document.getElementById('input-comentario-' + id);
+    const texto = input.value.trim();
+    if (texto) {
+        const usuario = localStorage.getItem('usuarioNome') || 'Você';
+        comentariosPublicacoes[id].push({ usuario, texto });
+        renderizarComentariosPublicacao(id);
+        input.value = '';
+    }
+}
+
+// Exibe/esconde comentários ao clicar no ícone
+function toggleComentarios(id) {
+    const area = document.getElementById('comentarios-abaixo-' + id);
+    if (!area) return;
+    if (area.style.display === 'none' || area.style.display === '') {
+        renderizarComentariosPublicacao(id);
+        area.style.display = 'block';
+    } else {
+        area.style.display = 'none';
+    }
+}
+
+// Inicializa área de comentários oculta
+for (let i = 1; i <= 3; i++) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const area = document.getElementById('comentarios-abaixo-' + i);
+        if (area) area.style.display = 'none';
+    });
+}
