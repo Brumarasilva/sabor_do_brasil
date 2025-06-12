@@ -265,24 +265,4 @@ a[title="Ver comentários"] {
     box-shadow: none !important;
 }
 
-.btn.btn-primary:has(.bi-send) {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 10px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn.btn-primary:has(.bi-send):hover,
-.btn.btn-primary:has(.bi-send):focus {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.btn.btn-primary .bi-send {
-    color: #000 !important;
-    font-size: 1.3em;
-}
+/* Remover fundo, borda e sombra do botão de enviar comentário (ícone bi-send) */
