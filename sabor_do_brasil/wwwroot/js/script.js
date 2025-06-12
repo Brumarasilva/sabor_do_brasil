@@ -32,8 +32,12 @@ if (window.location.pathname.endsWith('index.html') || window.location.pathname.
 }
 
 function logout() {
-    localStorage.removeItem('usuarioId');
-    window.location.reload();
+    if (confirm('Você deseja sair?')) {
+        localStorage.removeItem('usuarioId');
+        localStorage.removeItem('usuarioNome');
+        localStorage.removeItem('usuarioFoto');
+        window.location.href = 'index.html';
+    }
 }
 
 async function carregarPerfilUsuario() {
@@ -43,7 +47,7 @@ async function carregarPerfilUsuario() {
     const curtidasPerfil = document.getElementById('curtidasPerfil');
     const deslikesPerfil = document.getElementById('deslikesPerfil');
     const fotoSalva = localStorage.getItem('usuarioFoto');
-    const nomeSalvo = localStorage.getItem('usuarioNome'); // <-- pega o nome salvo
+    const nomeSalvo = localStorage.getItem('usuarioNome');
 
     if (idUsuario) {
         const resposta = await fetch(`/api/usuarios/${idUsuario}`);
@@ -59,16 +63,29 @@ async function carregarPerfilUsuario() {
             curtidasPerfil.textContent = '0';
             deslikesPerfil.textContent = '0';
         }
-    } else if (fotoSalva || nomeSalvo) {
-        if (fotoSalva) fotoPerfil.src = fotoSalva;
-        nomePerfil.textContent = "@" + ((nomeSalvo || "usuario").replace(/\s+/g, ''));
-        curtidasPerfil.textContent = '0';
-        deslikesPerfil.textContent = '0';
     } else {
-        fotoPerfil.removeAttribute('src');
-        nomePerfil.textContent = '@usuario';
-        curtidasPerfil.textContent = '0';
-        deslikesPerfil.textContent = '0';
+        // Não há usuário logado, busca perfil da empresa
+        try {
+            const resposta = await fetch('/api/empresa/1');
+            if (resposta.ok) {
+                const empresa = await resposta.json();
+                fotoPerfil.src = empresa.foto || "img/images__2_-removebg-preview.png";
+                nomePerfil.textContent = empresa.nome ? "@" + empresa.nome.replace(/\s+/g, '') : '@empresa';
+                // Se quiser mostrar curtidas/deslikes da empresa, pode buscar de outra rota ou deixar 0
+                curtidasPerfil.textContent = '0';
+                deslikesPerfil.textContent = '0';
+            } else {
+                fotoPerfil.removeAttribute('src');
+                nomePerfil.textContent = '@empresa';
+                curtidasPerfil.textContent = '0';
+                deslikesPerfil.textContent = '0';
+            }
+        } catch (e) {
+            fotoPerfil.removeAttribute('src');
+            nomePerfil.textContent = '@empresa';
+            curtidasPerfil.textContent = '0';
+            deslikesPerfil.textContent = '0';
+        }
     }
 }
 

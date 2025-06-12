@@ -174,6 +174,30 @@ hr{
     gap: 8px;
 }
 
+.comentario-linha.comentario-excluivel {
+    background: #f8f9fa;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.comentario-linha.comentario-excluivel:hover {
+    background: #ffeaea;
+}
+
+/* Alinhar o ícone de comentários (bi-chat-dots) à direita da publicação */
+.card-body .d-flex.align-items-center {
+    justify-content: flex-start;
+}
+.card-body .d-flex.align-items-center a[title="Ver comentários"] {
+    margin-left: auto;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+.card-body .d-flex.align-items-center a[title="Ver comentários"] i.bi.bi-chat-dots {
+    margin-right: 4px;
+}
+
 .comentario-conteudo {
     flex: 1;
     text-align: left;

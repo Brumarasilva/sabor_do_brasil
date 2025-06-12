@@ -14,6 +14,7 @@ CREATE TABLE usuarios (
 CREATE TABLE empresa (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
+    foto VARCHAR(255),
     cnpj VARCHAR(20),
     id_usuario INT,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
@@ -65,4 +66,4 @@ CREATE TABLE comentarios (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
     FOREIGN KEY (id_publicacao) REFERENCES publicacao(id)
 );
- 
+
