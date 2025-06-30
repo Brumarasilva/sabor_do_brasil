@@ -41,26 +41,26 @@
       <h3 class="text-center mb-4">Preencha suas informações</h3>
       <form action="/api/usuarios" method="post" enctype="multipart/form-data">
         <div class="mb-2">
-          <input type="text" name="Nome" id="nomeCompleto" class="form-control" placeholder="Digite seu nome completo"
+          <input type="text" name="nome" id="nomeCompleto" class="form-control" placeholder="Digite seu nome completo"
             required />
         </div>
         <div class="mb-2">
-          <input type="email" name="Email" id="emailUsuario" class="form-control" placeholder="Digite seu e-mail"
+          <input type="email" name="email" id="emailUsuario" class="form-control" placeholder="Digite seu e-mail"
             required />
         </div>
         <div class="mb-2">
-          <input type="tel" name="Telefone" id="telefoneUsuario" class="form-control" placeholder="Digite seu telefone" />
+          <input type="tel" name="telefone" id="telefoneUsuario" class="form-control" placeholder="Digite seu telefone" />
         </div>
         <div class="mb-2">
-          <input type="password" name="Senha" id="senhaUsuario" class="form-control" placeholder="Digite sua senha"
+          <input type="password" name="senha" id="senhaUsuario" class="form-control" placeholder="Digite sua senha"
             required />
         </div>
         <div class="mb-2">
-          <input type="password" name="ConfirmarSenha" id="confirmarSenhaUsuario" class="form-control"
+          <input type="password" name="confirmarsenha" id="confirmarSenhaUsuario" class="form-control"
             placeholder="Confirme sua senha" required />
         </div>
         <div class="mb-2">
-          <input type="file" name="Foto" id="fotoUsuario" class="form-control" accept="image/*" />
+          <input type="file" name="foto" id="fotoUsuario" class="form-control" accept="image/*" />
         </div>
         <div class="d-flex justify-content-between">
           <button type="button" class="btn btn-secondary w-45" onclick="window.location.href='index.html'">Voltar</button>

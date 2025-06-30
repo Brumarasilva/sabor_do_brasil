@@ -7,9 +7,7 @@ namespace sabor_do_brasil.Models
         public string Email { get; set; } = string.Empty;
         public string Senha { get; set; } = string.Empty;
         public string? Foto { get; set; } // para base64
-        // ou
-        // public byte[]? Foto { get; set; } // para binário
-
+        public string? Telefone { get; set; } // adicionado para compatibilidade com o cadastro
         // Relação com Curtidas
         public ICollection<Curtidas> Curtidas { get; set; } = new List<Curtidas>();
     }

@@ -256,6 +256,57 @@
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
     <script src="js/script.js"></script>
+    <script>
+    // Função para preencher o perfil do usuário logado
+    function preencherPerfilUsuario() {
+      const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+      if (usuario) {
+        document.getElementById('nomeUsuarioDinamico').textContent = usuario.nome;
+        document.getElementById('fotoPerfil').src = usuario.foto || 'img/mulher_usuario_01.jpg';
+      }
+    }
+
+    // Chame ao carregar a página
+    preencherPerfilUsuario();
+
+    document.querySelector('form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        const resposta = await fetch('/api/usuarios', {
+            method: 'POST',
+            body: formData // Não defina o Content-Type, o navegador faz isso automaticamente!
+        });
+
+        if (resposta.ok) {
+            window.location.href = 'index.html';
+        } else {
+            alert('Erro ao cadastrar usuário!');
+        }
+    });
+
+    function atualizarBotoesLogin() {
+        const idUsuario = localStorage.getItem('usuarioId');
+        const btnEntrar = document.querySelector('button[data-bs-target="#staticBackdrop"]');
+        const btnCadastrar = document.querySelector('button[onclick*="cadastro.html"]');
+        const btnSair = document.querySelector('button.btn-secondary');
+
+        if (idUsuario) {
+          // Usuário logado: esconde Entrar e Cadastrar, mostra Sair
+          if (btnEntrar) btnEntrar.style.display = 'none';
+          if (btnCadastrar) btnCadastrar.style.display = 'none';
+          if (btnSair) btnSair.style.display = '';
+        } else {
+          // Não logado: mostra Entrar e Cadastrar, esconde Sair
+          if (btnEntrar) btnEntrar.style.display = '';
+          if (btnCadastrar) btnCadastrar.style.display = '';
+          if (btnSair) btnSair.style.display = 'none';
+        }
+      }
+      document.addEventListener('DOMContentLoaded', atualizarBotoesLogin);
+    </script>
 </body>
 
 </html>

@@ -4,17 +4,18 @@ USE sabor_do_brasil;
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
-    email VARCHAR(100),
-    senha VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    senha VARCHAR(255),
     telefone VARCHAR(20),
-    data_cadastro DATE,
-    status ENUM('ativo', 'inativo')
+    foto LONGTEXT,
+    data_cadastro DATE DEFAULT (CURRENT_DATE),
+    status ENUM('ativo', 'inativo') DEFAULT 'ativo'
 );
 
 CREATE TABLE empresa (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
-    foto VARCHAR(255),
+    foto LONGTEXT,
     cnpj VARCHAR(20),
     id_usuario INT,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
